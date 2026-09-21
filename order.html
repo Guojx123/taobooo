@@ -569,7 +569,17 @@ function render(cfg) {
 function goEdit() {
   const cfg = getConfig();
   const qs = new URLSearchParams();
-  for (const key of Object.keys(DEFAULTS)) qs.set(key, cfg[key]);
+  const big = {};
+  let hasBig = false;
+  for (const key of Object.keys(DEFAULTS)) {
+    const v = cfg[key];
+    if (/^data:image\//.test(String(v))) { big[key] = v; hasBig = true; }  // base64 大图不进 URL，避免 400
+    else qs.set(key, v);
+  }
+  if (hasBig) {
+    try { sessionStorage.setItem('ob-big', JSON.stringify(big)); qs.set('big', '1'); }
+    catch (e) {}
+  }
   location.href = 'index.html?' + qs.toString();
 }
 function goBack() {

@@ -362,8 +362,13 @@ const FIELDS = ['imageUrl','title','spec','qty','price','origPrice','name','phon
 /* ================= 预填：URL 参数优先 ================= */
 function prefill() {
   const qs = new URLSearchParams(location.search);
+  let big = {};
+  if (qs.get('big') === '1') {
+    try { big = JSON.parse(sessionStorage.getItem('ob-big') || '{}'); } catch (e) {}
+  }
   for (const key of FIELDS) {
-    const v = qs.get(key);
+    let v = qs.get(key);
+    if ((v === null || v === '') && big[key]) v = big[key];  // 本地图片等大字段从 sessionStorage 回读
     $( 'f-' + key ).value = v !== null && v !== '' ? v : DEFAULTS[key];
   }
   updatePreviewImage();
