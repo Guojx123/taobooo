@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<html lang="zh-CN" data-page-node-id="Iy77WGlVITd00kgMFjFQeq">
+<head data-page-node-id="q9iTJTUnUK6WRBWDwxuBKF">
+<meta charset="UTF-8" data-page-node-id="mhCDZumYP55Chg8o3iWB6Q">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" data-page-node-id="6MPeITudqnZsuVoS46tBGG">
 <title>订单详情 - 交易成功</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff5000'/%3E%3Cpath d='M9 12 h14 M9 17 h14 M9 22 h9' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E" data-page-node-id="gLfa6pJ2duNR1rEqqyboOb">
 <style>
   :root {
     --bg: #f4f4f4;
@@ -35,8 +36,9 @@
     padding-bottom: 90px;
   }
   @media (min-width: 500px) {
-    body { padding: 0; }
-    .phone { box-shadow: 0 0 30px rgba(0,0,0,.15); }
+    body { padding: 0; align-items: flex-start; }
+    .phone { box-shadow: 0 0 30px rgba(0,0,0,.15); border-radius: 16px; }
+    .status-bar { border-radius: 16px 16px 0 0; }
   }
 
   /* ============ 状态栏 ============ */
@@ -88,6 +90,14 @@
     background: var(--card);
     margin-top: 10px;
     padding: 14px 16px;
+    animation: rise .32s ease both;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
   }
 
   /* ============ 物流栏 ============ */
@@ -121,14 +131,14 @@
     object-fit: cover; background: #dceefb; cursor: pointer;
   }
   .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .product .row1 { display: flex; gap: 8px; }
+  .product .row1 { display: flex; gap: 10px; }
   .product .title {
-    font-size: 14px; line-height: 1.4; flex: 1;
+    font-size: 14px; line-height: 1.45; flex: 1; color: #333;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .product .orig-price { font-size: 14px; color: var(--orange); font-weight: 500; flex-shrink: 0; }
-  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
-  .product .spec { font-size: 12px; color: #666; background: #f5f5f5; padding: 1px 5px; border-radius: 3px; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .product .orig-price { font-size: 14px; color: var(--orange); font-weight: 500; flex-shrink: 0; line-height: 1.45; }
+  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+  .product .spec { font-size: 12px; color: #666; background: #f2f2f2; padding: 1px 5px; border-radius: 3px; max-width: 74%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .product .qty { font-size: 13px; color: #999; flex-shrink: 0; }
   .product .tags { display: flex; gap: 6px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
   .tag { font-size: 11px; padding: 1px 5px; border-radius: 3px; }
@@ -157,7 +167,7 @@
   }
   .summary .coupon-tag::before { content: "¥"; font-size: 9px; border: 1px solid var(--red); border-radius: 50%; width: 11px; height: 11px; display: inline-flex; align-items: center; justify-content: center; }
   .summary .detail-link { font-size: 12px; color: #999; display: inline-flex; align-items: center; gap: 1px; margin-left: 8px; }
-  .summary .amount { margin-left: auto; font-size: 18px; color: #333; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .summary .amount { margin-left: auto; font-size: 19px; color: #333; font-weight: 700; display: flex; align-items: center; gap: 4px; letter-spacing: -.2px; }
   .summary .amount .rmb { font-size: 13px; }
   .summary .amount .chevron { font-size: 12px; color: #999; }
   .summary .coupon-row { margin-top: 8px; display: flex; }
@@ -175,10 +185,10 @@
   .order .copy { font-size: 13px; color: #666; margin-left: 8px; flex-shrink: 0; cursor: pointer; }
   .order .row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 9px 0; font-size: 14px;
+    padding: 10px 0; font-size: 14px; line-height: 1.5;
   }
   .order .row .k { color: #333; flex-shrink: 0; }
-  .order .row .v { color: #666; text-align: right; margin-left: 20px; word-break: break-all; }
+  .order .row .v { color: #666; text-align: right; margin-left: 24px; word-break: break-all; }
   .order .row .v.dim { color: #999; }
 
   /* ============ 底部操作栏 ============ */
@@ -244,7 +254,16 @@
   }
   .cfg-reset { background: #f5f5f5; border: none; color: #666; }
   .cfg-save { background: linear-gradient(90deg, #ff7000, #ff4400); border: none; color: #fff; font-weight: 600; }
+  .cfg-link { background: #fff5ee; border: 1px solid #ffd0b0; color: var(--orange); font-weight: 500; }
   .cfg-tip { font-size: 11px; color: #bbb; margin-top: 10px; line-height: 1.6; }
+
+  /* lightbox */
+  .lightbox {
+    position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 60;
+    display: none; align-items: center; justify-content: center; padding: 24px;
+  }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; }
 
   /* toast */
   .toast {
@@ -256,250 +275,263 @@
   .toast.show { opacity: 1; }
 </style>
 </head>
-<body>
-<div class="phone">
+<body data-page-node-id="tr482ojTpCIFB9ZgTAf5qO">
+<div class="phone" data-page-node-id="jH5YpauCQZdnq9aIIf9G15">
 
   <!-- 状态栏 -->
-  <div class="status-bar">
-    <span>08:43</span>
-    <div class="status-right">
-      <div class="signal-bars"><i></i><i></i><i></i><i></i></div>
-      <span class="net-tag">5GA</span>
-      <div class="battery"><div class="battery-level"></div></div>
-      <span class="battery-num">66</span>
+  <div class="status-bar" data-page-node-id="qEPmqbqNMzjgWA2okDfCg5">
+    <span data-page-node-id="jMny99zLKPZ9MovCV3CdIw">08:43</span>
+    <div class="status-right" data-page-node-id="kDJW2D5Ksb75Qgc1sUWy8i">
+      <div class="signal-bars" data-page-node-id="jrLFplSkBtZflfeQX9SLvU"><i data-page-node-id="aTkSDoI3mSPhmMDfjSDzZI"></i><i data-page-node-id="N9l9awoPhE7vjOAvd8950K"></i><i data-page-node-id="AIIxFvCN51G0dFmAiU0tzb"></i><i data-page-node-id="w5MyUWUPZG92KJ7yc9NvYp"></i></div>
+      <span class="net-tag" data-page-node-id="NTaHwoDjt4qe9wG55bdvBA">5GA</span>
+      <div class="battery" data-page-node-id="9QNwjQtYadGmEpoVahIZeo"><div class="battery-level" data-page-node-id="DYljfT8hNtVsAZZ4AQAQRS"></div></div>
+      <span class="battery-num" data-page-node-id="mPzSJQxeCnQVCBWoMT5tgL">66</span>
     </div>
   </div>
 
   <!-- 导航栏 -->
-  <div class="nav">
-    <div class="icon-btn" onclick="toast('返回')">
-      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13 3 L6 10 L13 17" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="nav" data-page-node-id="iKRS9v5GWS2jHLiNupZHYt">
+    <div class="icon-btn" onclick="toast('返回')" data-page-node-id="mGlcSMf1GRgf1aRB1ZZjwd">
+      <svg width="20" height="20" viewBox="0 0 20 20" data-page-node-id="pwgB3FjcZtBZmYOGT5B2hO"><path d="M13 3 L6 10 L13 17" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="xpIAGDVW1GARiJn2GjzSiq"/></svg>
     </div>
-    <div class="title">交易成功</div>
-    <div class="dots" onclick="toast('更多')">•••</div>
+    <div class="title" data-page-node-id="8kD3gcmBKFtPMovs8xlGLC">交易成功</div>
+    <div class="dots" onclick="toast('更多')" data-page-node-id="hITOGfBJMM5GNJLfQDKrIV">•••</div>
   </div>
 
   <!-- 物流栏 -->
-  <div class="card logistics" onclick="toast('查看物流')">
-    <svg class="pkg-icon" width="22" height="22" viewBox="0 0 22 22">
-      <rect x="2" y="5" width="18" height="14" rx="2" fill="none" stroke="#ff5000" stroke-width="1.8"/>
-      <path d="M2 9 H20 M11 5 V9" stroke="#ff5000" stroke-width="1.8"/>
-      <path d="M7 2 L11 5 L15 2" fill="none" stroke="#ff5000" stroke-width="1.8" stroke-linejoin="round"/>
+  <div class="card logistics" onclick="toast('查看物流')" data-page-node-id="rDA8sKWRNhDopcYrrCWtX7">
+    <svg class="pkg-icon" width="22" height="22" viewBox="0 0 22 22" data-page-node-id="IRpCRLC1UXusnrsctco5un">
+      <rect x="2" y="5" width="18" height="14" rx="2" fill="none" stroke="#ff5000" stroke-width="1.8" data-page-node-id="ZjMOnfr0ClMSs1qElkm1KS"/>
+      <path d="M2 9 H20 M11 5 V9" stroke="#ff5000" stroke-width="1.8" data-page-node-id="FI6csqHZ8YGJ3qxC6EUD0R"/>
+      <path d="M7 2 L11 5 L15 2" fill="none" stroke="#ff5000" stroke-width="1.8" stroke-linejoin="round" data-page-node-id="z3Z58R2J9EIIOgIW2Slk26"/>
     </svg>
-    <span class="status" id="logi-status">已签收</span>
-    <span class="divider">|</span>
-    <div class="addr">
-      <span class="user">
-        <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="3" fill="none" stroke="#999" stroke-width="1.3"/><path d="M1.5 13 C1.5 9.8 4 8.5 7 8.5 C10 8.5 12.5 9.8 12.5 13" fill="none" stroke="#999" stroke-width="1.3" stroke-linecap="round"/></svg>
-        <span class="text" id="logi-addr">困 86-189****0880 送至 里水大道...</span>
+    <span class="status" id="logi-status" data-page-node-id="GBtnP3k2jyFxD3SEtxrkbK">已签收</span>
+    <span class="divider" data-page-node-id="qCUN73eeMdRInXh8zE1ap9">|</span>
+    <div class="addr" data-page-node-id="1gzi4Yi8OJziyjFXAeqKcf">
+      <span class="user" data-page-node-id="T77jkKbJQxUIucaVM5GTeQ">
+        <svg width="14" height="14" viewBox="0 0 14 14" data-page-node-id="WH58nf5nCndjwLn4Pu0NU5"><circle cx="7" cy="4.5" r="3" fill="none" stroke="#999" stroke-width="1.3" data-page-node-id="9Z4tH9NgYqfkX31aCJNKGI"/><path d="M1.5 13 C1.5 9.8 4 8.5 7 8.5 C10 8.5 12.5 9.8 12.5 13" fill="none" stroke="#999" stroke-width="1.3" stroke-linecap="round" data-page-node-id="GWvGmQHy03Un2H3WkvJfwG"/></svg>
+        <span class="text" id="logi-addr" data-page-node-id="fUpz9MwKlQlEyXv9QpactE">困 86-189****0880 送至 里水大道...</span>
       </span>
     </div>
-    <span class="arrow">›</span>
+    <span class="arrow" data-page-node-id="rAYkGDHHXXiKlgckRjBACL">›</span>
   </div>
 
   <!-- 店铺信息 -->
-  <div class="card shop">
-    <img class="avatar" id="shop-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect width='42' height='42' fill='%236db3f2'/%3E%3Ccircle cx='21' cy='16' r='7' fill='%23fff' opacity='.85'/%3E%3Cpath d='M8 38 C8 28 14 26 21 26 C28 26 34 28 34 38 Z' fill='%23fff' opacity='.85'/%3E%3C/svg%3E" alt="店铺头像">
-    <div class="info">
-      <div class="name" id="shop-name">万千少女梦</div>
-      <div class="desc" id="shop-desc">88VIP好评率93%，客服平均22秒回复</div>
+  <div class="card shop" data-page-node-id="AneVIVfHIylC3PeBf5w3Og">
+    <img class="avatar" id="shop-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect width='42' height='42' fill='%236db3f2'/%3E%3Ccircle cx='21' cy='16' r='7' fill='%23fff' opacity='.85'/%3E%3Cpath d='M8 38 C8 28 14 26 21 26 C28 26 34 28 34 38 Z' fill='%23fff' opacity='.85'/%3E%3C/svg%3E" alt="店铺头像" data-page-node-id="qIBotJ7uN6WHjPPJMI5OjQ">
+    <div class="info" data-page-node-id="vw3K7w1ATZePFnRRmpLpQA">
+      <div class="name" id="shop-name" data-page-node-id="eVlXNLFIlGdllnvFnW6ouI">万千少女梦</div>
+      <div class="desc" id="shop-desc" data-page-node-id="GHHLXaPcaNM265GjBwC01O">88VIP好评率93%，客服平均22秒回复</div>
     </div>
-    <div class="enter" onclick="toast('进店逛逛')">进店逛逛 <span>›</span></div>
+    <div class="enter" onclick="toast('进店逛逛')" data-page-node-id="hFWUHbeI0e2fSDnbhEh84v">进店逛逛 <span data-page-node-id="kywwsD4RkyMA4vqYTiNvgW">›</span></div>
   </div>
 
   <!-- 商品卡片 -->
-  <div class="card product">
-    <div class="product-main">
-      <img class="pic" id="product-image" src="img/product.jpg" alt="商品图" onclick="toast('商品图片')">
-      <div class="detail">
-        <div class="row1">
-          <div class="title" id="product-title">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
-          <div class="orig-price" id="orig-price">¥5.99</div>
+  <div class="card product" data-page-node-id="tnTecnhwnX2pjDY1QuiHFV">
+    <div class="product-main" data-page-node-id="MZtzHOpf9IgtwcnnEEtpHK">
+      <img class="pic" id="product-image" src="img/product.jpg" alt="商品图" onclick="openLightbox(this.src)" data-page-node-id="Nz6jBlvd8sTfn74DM04DEd">
+      <div class="detail" data-page-node-id="pU851qsGyieltKNe5pz0dq">
+        <div class="row1" data-page-node-id="E2R8ov4DrEBLlFZPmIDQ6i">
+          <div class="title" id="product-title" data-page-node-id="mkJpZhEPfSayDYpWCCX3hW">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
+          <div class="orig-price" id="orig-price" data-page-node-id="4dLdvtQPp65mJFDxHgjxLu">¥5.99</div>
         </div>
-        <div class="row2">
-          <span class="spec" id="product-spec">蓝咖撞色波点BB夹【四件套】</span>
-          <span class="qty">x<span id="product-qty">1</span></span>
+        <div class="row2" data-page-node-id="21oBBGD9uAdcNvYZhtXWzx">
+          <span class="spec" id="product-spec" data-page-node-id="bwHo8yrVlcXFl80JLnomzT">蓝咖撞色波点BB夹【四件套】</span>
+          <span class="qty" data-page-node-id="3DIZHhqrxkup2E05zEthr0">x<span id="product-qty" data-page-node-id="fgB0UkphVAuBnytI7TgYLd">1</span></span>
         </div>
-        <div class="tags">
-          <span class="tag tag-fast">
-            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 0 L6.2 3.4 L9.8 3.6 L7 5.8 L8 9.4 L5 7.3 L2 9.4 L3 5.8 L0.2 3.6 L3.8 3.4 Z" fill="#00b578"/></svg>
+        <div class="tags" data-page-node-id="ph8DlpZdgO9u9F5iwvcnLZ">
+          <span class="tag tag-fast" data-page-node-id="QC1m9CnntfO7CHDupOrBF8">
+            <svg width="10" height="10" viewBox="0 0 10 10" data-page-node-id="iQuuwzogHQYSmTcW9TCtgb"><path d="M5 0 L6.2 3.4 L9.8 3.6 L7 5.8 L8 9.4 L5 7.3 L2 9.4 L3 5.8 L0.2 3.6 L3.8 3.4 Z" fill="#00b578" data-page-node-id="6GMK4LScHvkGU3GJqC0tMg"/></svg>
             极速退款
           </span>
-          <span class="tag tag-return">7天无理由退货 <span style="font-size:9px">›</span></span>
+          <span class="tag tag-return" data-page-node-id="IEQtFKKxHOIjHlNqWd98hQ">7天无理由退货 <span style="font-size:9px" data-page-node-id="WJt9dEytysFR9OiSTDQJKa">›</span></span>
         </div>
-        <div class="pay-row">
-          <span class="pay-label">实付价</span>
-          <span class="pay-price" id="pay-price">¥4.99</span>
-          <span class="pay-detail" onclick="toast('价格明细')">价格明细 <span>›</span></span>
+        <div class="pay-row" data-page-node-id="nrGkEpegGKbWTbr7ZuNskn">
+          <span class="pay-label" data-page-node-id="xdHHmGoMOtem3ErIhlYpuh">实付价</span>
+          <span class="pay-price" id="pay-price" data-page-node-id="OCfPlJXLF0pqAgFE0HGIGk">¥4.99</span>
+          <span class="pay-detail" onclick="toast('价格明细')" data-page-node-id="Dc6eTIPk9M5Zf0bUGSESW1">价格明细 <span data-page-node-id="a8sUgTFEqBIv79AejTZJ9t">›</span></span>
         </div>
       </div>
     </div>
-    <div class="actions">
-      <button class="btn" onclick="toast('闲鱼转卖')">闲鱼转卖</button>
-      <button class="btn" onclick="toast('申请售后')">申请售后</button>
-      <button class="btn btn-orange" onclick="toast('加入购物车')">加入购物车</button>
+    <div class="actions" data-page-node-id="BtEJ110solnIbVDkrAwuen">
+      <button class="btn" onclick="toast('闲鱼转卖')" data-page-node-id="lWjEpEQVAA3gnLUK8cKGiL">闲鱼转卖</button>
+      <button class="btn" onclick="toast('申请售后')" data-page-node-id="wJSJ7kP3lVjmbWAHbDlq1Q">申请售后</button>
+      <button class="btn btn-orange" onclick="toast('加入购物车')" data-page-node-id="FkiklUbqU87mnemeTgWAsW">加入购物车</button>
     </div>
   </div>
 
   <!-- 价格摘要 -->
-  <div class="card summary">
-    <div class="sum-row">
-      <span class="label">实付款</span>
-      <span class="discount">共减<span id="discount-amount">¥1</span></span>
-      <span class="detail-link" onclick="toast('优惠解析')">优惠解析 <span>›</span></span>
-      <span class="amount">
-        <span class="rmb">¥</span><span id="total-amount">4.99</span>
-        <span class="chevron">˅</span>
+  <div class="card summary" data-page-node-id="lkKAVm1lUljeKIVUjPFpyz">
+    <div class="sum-row" data-page-node-id="FQHjoi0oWOtohE2ouxEIsQ">
+      <span class="label" data-page-node-id="Mt8hHSsUkDY16JgTfxtZrS">实付款</span>
+      <span class="discount" data-page-node-id="YU6Vv69MXKrlMBQ6tmECJt">共减<span id="discount-amount" data-page-node-id="obfTfug1d4uxl7ySLaps4a">¥1</span></span>
+      <span class="detail-link" onclick="toast('优惠解析')" data-page-node-id="YXhTFueUCOpGyxsqpVfRXV">优惠解析 <span data-page-node-id="5R5bnOtZwKl8f9FGRPNgdx">›</span></span>
+      <span class="amount" data-page-node-id="kTBDraJJuKx5Rs6cLqa3XJ">
+        <span class="rmb" data-page-node-id="Xdb7h2ebRcHEUsQkApAH9y">¥</span><span id="total-amount" data-page-node-id="qUxpqroACz3yS6upfbb8xi">4.99</span>
+        <span class="chevron" data-page-node-id="iAbZhDEiJjQZrnEKguAtBM">˅</span>
       </span>
     </div>
-    <div class="coupon-row">
-      <span class="gift-tag" id="gift-tag">首单礼金抵¥1</span>
+    <div class="coupon-row" data-page-node-id="d8244OKDhXL51bOdza0yg9">
+      <span class="gift-tag" id="gift-tag" data-page-node-id="N1pf8fbDuWS5fninlm8iND">首单礼金抵¥1</span>
     </div>
   </div>
 
   <!-- 订单信息 -->
-  <div class="card order">
-    <div class="head">
-      <span class="label">订单信息</span>
-      <span class="count">共7项</span>
-      <span class="chevron">^</span>
-      <span class="oid" id="order-id">5127217527457057230</span>
-      <span class="copy" onclick="copyOrderId()">复制</span>
+  <div class="card order" data-page-node-id="6UWHmKr2FXe3grEXKMKjcF">
+    <div class="head" data-page-node-id="Pn1Meq3DRWVQeb8UqLARly">
+      <span class="label" data-page-node-id="6Agfbh4BQmJ4bjmEVgbuFw">订单信息</span>
+      <span class="count" data-page-node-id="fLiWFYZENZWOH41ZLEGfoD">共7项</span>
+      <span class="chevron" data-page-node-id="D5acxq51JZUwMrPnhOmQ7o">^</span>
+      <span class="oid" id="order-id" data-page-node-id="YFEcXLsceQZAeG4hnGgMVf">5127217527457057230</span>
+      <span class="copy" onclick="copyOrderId()" data-page-node-id="cdXTnIu5pSsNVm42Y65Iwu">复制</span>
     </div>
-    <div class="row">
-      <span class="k">支付方式</span>
-      <span class="v dim" id="pay-method">支付宝支付</span>
+    <div class="row" data-page-node-id="gZoFMQedPknpqNAR7gE7sc">
+      <span class="k" data-page-node-id="UcsuEr7vsLs4AT4qyG8wOG">支付方式</span>
+      <span class="v dim" id="pay-method" data-page-node-id="MVNP8JScQIogaPpI6WJPFj">支付宝支付</span>
     </div>
-    <div class="row">
-      <span class="k">收货信息 <span style="font-size:12px">☕</span></span>
-      <span class="v" id="recv-info">困，86-189****0880，广东省 佛山市 南海区 里水镇 ******************</span>
+    <div class="row" data-page-node-id="kTIE3gymJX59J3aI2AzmgP">
+      <span class="k" data-page-node-id="GEAtEIuVV9xz6uUy0yacnr">收货信息 <span style="font-size:12px" data-page-node-id="PqDEOJD6yxgPp0yoSFyr7U">☕</span></span>
+      <span class="v" id="recv-info" data-page-node-id="kNlu4jaNN9mBLBu4tb6fZi">困，86-189****0880，广东省 佛山市 南海区 里水镇 ******************</span>
     </div>
-    <div class="row">
-      <span class="k">支付宝交易号</span>
-      <span class="v" id="trade-no">2026090123001180001446401077</span>
+    <div class="row" data-page-node-id="V6q44A7Dmsw4BPBEkYuXV7">
+      <span class="k" data-page-node-id="6zWNBG3JYbjaKst4qC7Ecp">支付宝交易号</span>
+      <span class="v" id="trade-no" data-page-node-id="BhUF4JxZIZ2FSl9fLnOPWM">2026090123001180001446401077</span>
     </div>
-    <div class="row">
-      <span class="k">创建时间</span>
-      <span class="v" id="create-time">2026-09-01 16:39:46</span>
+    <div class="row" data-page-node-id="IO1ZpbbflaWbTAIrzJks2E">
+      <span class="k" data-page-node-id="2Dx85edG4hEhZUPVC2L6ci">创建时间</span>
+      <span class="v" id="create-time" data-page-node-id="DxqbfvLEz9G7OrY3kwQA8r">2026-09-01 16:39:46</span>
     </div>
-    <div class="row">
-      <span class="k">付款时间</span>
-      <span class="v" id="pay-time">2026-09-01 16:39:48</span>
+    <div class="row" data-page-node-id="NoaD7d2K8mBv9TLEYlCMAS">
+      <span class="k" data-page-node-id="rsGrLitkUEV6TuJP5HjHzO">付款时间</span>
+      <span class="v" id="pay-time" data-page-node-id="ypHywHAH12sXX0e1hFvm0k">2026-09-01 16:39:48</span>
     </div>
-    <div class="row">
-      <span class="k">发货时间</span>
-      <span class="v" id="ship-time">2026-09-01 17:55:52</span>
+    <div class="row" data-page-node-id="Kv95RXq0lP3rcJpygNMBoB">
+      <span class="k" data-page-node-id="sKzgzRy6L2I2Exu6q47nvF">发货时间</span>
+      <span class="v" id="ship-time" data-page-node-id="W1bHcs5PoQcNH9hiHouBAW">2026-09-01 17:55:52</span>
     </div>
   </div>
 
   <!-- 底部操作栏 -->
-  <div class="bottom-bar">
-    <div class="bb-icon" onclick="toast('联系客服')">
-      <svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 11 a8 8 0 0 1 16 0 v4 a3 3 0 0 1 -3 3 h-2" fill="none" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><rect x="2" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6"/><rect x="16" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6"/></svg>
+  <div class="bottom-bar" data-page-node-id="05moncl49kpkmFX1YBqZR5">
+    <div class="bb-icon" onclick="toast('联系客服')" data-page-node-id="yE6xXRJIJqA74oQ7CLyCen">
+      <svg width="22" height="22" viewBox="0 0 22 22" data-page-node-id="M8xN58wrswJSe4qySCn7GZ"><path d="M3 11 a8 8 0 0 1 16 0 v4 a3 3 0 0 1 -3 3 h-2" fill="none" stroke="#333" stroke-width="1.6" stroke-linecap="round" data-page-node-id="G7BGxdINwqNKSrblknGmR2"/><rect x="2" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6" data-page-node-id="FCD7pzDOIVqXAvOYld6FmA"/><rect x="16" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6" data-page-node-id="yh0fO2X5Otk09Ee5YDNsBu"/></svg>
       客服
     </div>
-    <div class="bb-icon" onclick="openConfig()">
-      <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="6" cy="11" r="1.6" fill="#333"/><circle cx="11" cy="11" r="1.6" fill="#333"/><circle cx="16" cy="11" r="1.6" fill="#333"/></svg>
+    <div class="bb-icon" onclick="openConfig()" data-page-node-id="H4fD8EGDpDIILxBjt08Dwb">
+      <svg width="22" height="22" viewBox="0 0 22 22" data-page-node-id="2iMUg7sv7A4jh8mAd5Lgj4"><circle cx="6" cy="11" r="1.6" fill="#333" data-page-node-id="8v1eRDyW7SlLFI9rLfQHFa"/><circle cx="11" cy="11" r="1.6" fill="#333" data-page-node-id="tVfrgaTHRoHDX5JXD3HO8h"/><circle cx="16" cy="11" r="1.6" fill="#333" data-page-node-id="eGVzEFUG0RydNEdIYkK4lM"/></svg>
       更多
     </div>
-    <button class="bb-btn" onclick="toast('评价')">评价</button>
-    <button class="bb-btn" onclick="toast('加入购物车')">加入购物车</button>
-    <button class="bb-btn-primary" onclick="toast('再买一单')">再买一单</button>
+    <button class="bb-btn" onclick="toast('评价')" data-page-node-id="GZKiA7Z7S8ceiu2ZPxYZpr">评价</button>
+    <button class="bb-btn" onclick="toast('加入购物车')" data-page-node-id="1yIHdlV2r4qxpH6oCs5yJ6">加入购物车</button>
+    <button class="bb-btn-primary" onclick="toast('再买一单')" data-page-node-id="3kUOG2AeowQUVXxfBhNtHP">再买一单</button>
   </div>
 
   <!-- 配置面板入口 -->
-  <button class="config-fab" onclick="openConfig()" title="配置页面数据">⚙</button>
+  <button class="config-fab" onclick="openConfig()" title="配置页面数据" data-page-node-id="Ln4vLwEuDIxyocOnXCvcoQ">⚙</button>
 
   <!-- 配置面板 -->
-  <div class="config-mask" id="config-mask" onclick="closeConfig()"></div>
-  <div class="config-panel" id="config-panel">
-    <h3>页面数据配置 <span class="close" onclick="closeConfig()">×</span></h3>
+  <div class="config-mask" id="config-mask" onclick="closeConfig()" data-page-node-id="AH5SH1ESSbOYxXVLuV1aPb"></div>
+  <div class="config-panel" id="config-panel" data-page-node-id="zlJiWXJODEwnJh5FTwYtae">
+    <h3 data-page-node-id="Hhl1abfUaescBUqamkD4so">页面数据配置 <span class="close" onclick="closeConfig()" data-page-node-id="QXWITIswNO6weWrBydAoHY">×</span></h3>
 
-    <div class="cfg-group">
-      <label>商品图片</label>
-      <div class="cfg-img-row">
-        <img class="cfg-img-preview" id="cfg-img-preview" src="img/product.jpg">
-        <div>
-          <input type="text" id="cfg-image-url" placeholder="图片 URL，或点击右侧上传">
-          <span class="cfg-file-btn" onclick="document.getElementById('cfg-image-file').click()">上传本地图片</span>
-          <input type="file" id="cfg-image-file" accept="image/*" style="display:none" onchange="onImageFilePick(this)">
+    <div class="cfg-group" data-page-node-id="aMaiw24dqvU8gYosFzD3d9">
+      <label data-page-node-id="2AxEOlOEplsRZFPApIB5Jm">商品图片</label>
+      <div class="cfg-img-row" data-page-node-id="w4NsGFjP1FmNZAXi3WgN7E">
+        <img class="cfg-img-preview" id="cfg-img-preview" src="img/product.jpg" data-page-node-id="fmAwVMsdhFZy81NvPFBsKE">
+        <div data-page-node-id="9jxIDyFME45nsY6HPhuxGI">
+          <input type="text" id="cfg-image-url" placeholder="图片 URL，或点击右侧上传" data-page-node-id="BWUPNSwKFHYH7kh1a6mm47">
+          <span class="cfg-file-btn" onclick="document.getElementById('cfg-image-file').click()" data-page-node-id="ugCDBn1GIMUmNhd4GDOxkO">上传本地图片</span>
+          <input type="file" id="cfg-image-file" accept="image/*" style="display:none" onchange="onImageFilePick(this)" data-page-node-id="2p45dtTJpHUfUsSK8awSSX">
         </div>
       </div>
     </div>
 
-    <div class="cfg-group">
-      <label>商品标题</label>
+    <div class="cfg-group" data-page-node-id="pScvmvbweKXXQoKcNaL8Qf">
+      <label data-page-node-id="gQdGhE0v5iFDDewHjucCsx">商品标题</label>
       <textarea id="cfg-title"></textarea>
     </div>
 
-    <div class="cfg-row">
-      <div class="cfg-group">
-        <label>实付价 (¥)</label>
-        <input type="text" id="cfg-price" inputmode="decimal">
+    <div class="cfg-row" data-page-node-id="d8I5GFBJcakNLRdHVycr8Y">
+      <div class="cfg-group" data-page-node-id="feQV6gAtDPX4mAKgFUU6Am">
+        <label data-page-node-id="vh4nh6GUykjGroleCb1LTg">实付价 (¥)</label>
+        <input type="text" id="cfg-price" inputmode="decimal" data-page-node-id="qJnfQwBByQXT6xXmJIr6bR">
       </div>
-      <div class="cfg-group">
-        <label>原价 (¥)</label>
-        <input type="text" id="cfg-orig-price" inputmode="decimal">
+      <div class="cfg-group" data-page-node-id="a0TmTP9sETLkGlg9lgMnA8">
+        <label data-page-node-id="BrxH7CWP86TZQKpALLO7hn">原价 (¥)</label>
+        <input type="text" id="cfg-orig-price" inputmode="decimal" data-page-node-id="38fWzvP4VhLnHTtPfa98ad">
       </div>
-      <div class="cfg-group">
-        <label>共减 (¥)</label>
-        <input type="text" id="cfg-discount" inputmode="decimal">
-      </div>
-    </div>
-
-    <div class="cfg-row">
-      <div class="cfg-group">
-        <label>收货人</label>
-        <input type="text" id="cfg-name">
-      </div>
-      <div class="cfg-group">
-        <label>电话</label>
-        <input type="text" id="cfg-phone">
+      <div class="cfg-group" data-page-node-id="gAnfEMwxEeOzVb7JwGsGJU">
+        <label data-page-node-id="PozZYuIdAnWzCkCBSxQePP">共减 (¥)</label>
+        <input type="text" id="cfg-discount" inputmode="decimal" data-page-node-id="0JKJ7ilpcSY1WGzDe8ZZx2">
       </div>
     </div>
 
-    <div class="cfg-group">
-      <label>收货地址</label>
+    <div class="cfg-row" data-page-node-id="mm5uoqXv51nciAE0nFKLe7">
+      <div class="cfg-group" data-page-node-id="QQ58EXBb851J8DfwAMPDo2">
+        <label data-page-node-id="RYF3mHTpyWFqVkFXl3ltYX">收货人</label>
+        <input type="text" id="cfg-name" data-page-node-id="WbtgPzpMqM1wcxEJeDO39X">
+      </div>
+      <div class="cfg-group" data-page-node-id="bJBtkH4amlBosBmDZtFvCL">
+        <label data-page-node-id="8syASQvV6I35eoScWa0w9w">电话</label>
+        <input type="text" id="cfg-phone" data-page-node-id="pmxxvNvGzyDx512J7c0fpa">
+      </div>
+    </div>
+
+    <div class="cfg-group" data-page-node-id="ULrw4RLBfGdnVoPlucWlLI">
+      <label data-page-node-id="220ue9q0kDFQIqUs0APNrU">收货地址</label>
       <textarea id="cfg-address"></textarea>
     </div>
 
-    <div class="cfg-row">
-      <div class="cfg-group">
-        <label>创建时间</label>
-        <input type="text" id="cfg-create-time" placeholder="2026-09-01 16:39:46">
+    <div class="cfg-row" data-page-node-id="wQSsaQl0z2cBdYhTSeFCHQ">
+      <div class="cfg-group" data-page-node-id="JtyDFAt5evPl5jNN5jn1E7">
+        <label data-page-node-id="Wjjqg6kxQlh2EnBBa06Cri">创建时间</label>
+        <input type="text" id="cfg-create-time" placeholder="2026-09-01 16:39:46" data-page-node-id="5MaHPvkcDleUGAaDnSpMZe">
       </div>
-      <div class="cfg-group">
-        <label>付款时间</label>
-        <input type="text" id="cfg-pay-time" placeholder="2026-09-01 16:39:48">
+      <div class="cfg-group" data-page-node-id="CQBHd7xmgiqoOhaqN5ac8y">
+        <label data-page-node-id="6hDl7imwCwTw5Vl5BI57He">付款时间</label>
+        <input type="text" id="cfg-pay-time" placeholder="2026-09-01 16:39:48" data-page-node-id="BQ71ASXkFZcU4h6boOP3un">
       </div>
     </div>
-    <div class="cfg-row">
-      <div class="cfg-group">
-        <label>发货时间</label>
-        <input type="text" id="cfg-ship-time" placeholder="2026-09-01 17:55:52">
+    <div class="cfg-row" data-page-node-id="0NZgzeNj841pYNtD78RjgT">
+      <div class="cfg-group" data-page-node-id="n4JVqWuoHNsRHTu97GHKOl">
+        <label data-page-node-id="wWWErAm7H2AeHyuWUNLSqa">发货时间</label>
+        <input type="text" id="cfg-ship-time" placeholder="2026-09-01 17:55:52" data-page-node-id="EtiOvRiAd3CYNzUEUdv1aW">
       </div>
-      <div class="cfg-group">
-        <label>订单号</label>
-        <input type="text" id="cfg-order-id">
+      <div class="cfg-group" data-page-node-id="TuRadDQLFdvmivwEyGcDxa">
+        <label data-page-node-id="Z68lHxzavlQImOMYsjhSmA">订单号</label>
+        <input type="text" id="cfg-order-id" data-page-node-id="cBMJH718XMJOAX5HbfcXhy">
       </div>
+    </div>
+
+    <div class="cfg-group" data-page-node-id="ZlQYICv8kmHzpmWgVxTOKE">
+      <label data-page-node-id="1TfagGHtDaZFMFufmFIPQX">店铺名称</label>
+      <input type="text" id="cfg-shop-name" data-page-node-id="AyUIOg749dUhXAauQenTj7">
     </div>
 
     <div class="cfg-group">
-      <label>店铺名称</label>
-      <input type="text" id="cfg-shop-name">
+      <label>订单状态（已签收 / 待收货 / 待发货）</label>
+      <input type="text" id="cfg-status" placeholder="已签收">
     </div>
 
-    <div class="cfg-actions">
-      <button class="cfg-reset" onclick="resetConfig()">恢复默认</button>
-      <button class="cfg-save" onclick="saveConfig()">保存并应用</button>
+    <div class="cfg-actions" data-page-node-id="xAFXH10HMO2DFYLatU1yql">
+      <button class="cfg-reset" onclick="resetConfig()" data-page-node-id="RcSUK9w493DTtth46acOAt">恢复默认</button>
+      <button class="cfg-save" onclick="saveConfig()" data-page-node-id="NBflfNHUjKcRM9oF7YJJTH">保存并应用</button>
     </div>
-    <div class="cfg-tip">
-      提示：配置会保存在浏览器本地（localStorage）。也可以直接通过 URL 参数配置，例如：<br>
-      <code>?title=商品名&price=9.9&address=广东省佛山市</code>
+    <div class="cfg-actions" style="margin-top:8px">
+      <button class="cfg-link" onclick="copyConfigLink()">生成配置链接并复制</button>
+    </div>
+    <div class="cfg-tip" data-page-node-id="XEn9sLA0gWGGd6blVMHEaB">
+      提示：配置会保存在浏览器本地（localStorage）。也可以直接通过 URL 参数配置，例如：<br data-page-node-id="mTKNfJUFYYlbX5EbMIUBPA">
+      <code data-page-node-id="ei3BiPh3VXTqH7BkCETXk2">?title=商品名&price=9.9&address=广东省佛山市</code>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- 商品图大图预览 -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="商品大图">
+  </div>
+
+  <div class="toast" id="toast" data-page-node-id="JCi4Agt0nqyiHu278rdFM3"></div>
 </div>
 
 <script>
@@ -522,7 +554,8 @@ const DEFAULTS = {
   payTime: '2026-09-01 16:39:48',
   shipTime: '2026-09-01 17:55:52',
   shopName: '万千少女梦',
-  shopDesc: '88VIP好评率93%，客服平均22秒回复'
+  shopDesc: '88VIP好评率93%，客服平均22秒回复',
+  status: '已签收'
 };
 
 /* ================= 读取配置：localStorage + URL 参数（URL 优先） ================= */
@@ -539,13 +572,32 @@ function getConfig() {
     name: 'name', phone: 'phone', address: 'address',
     orderId: 'orderId', tradeNo: 'tradeNo', payMethod: 'payMethod',
     createTime: 'createTime', payTime: 'payTime', shipTime: 'shipTime',
-    shopName: 'shopName', shopDesc: 'shopDesc'
+    shopName: 'shopName', shopDesc: 'shopDesc', status: 'status'
   };
   for (const [key, field] of Object.entries(map)) {
     const v = qs.get(key);
     if (v !== null && v !== '') cfg[field] = v;
   }
+  // 未指定优惠金额时，按 原价-实付价 自动算出「共减」
+  if (!qs.has('discount')) {
+    const o = parseFloat(cfg.origPrice), p = parseFloat(cfg.price);
+    if (!isNaN(o) && !isNaN(p) && o > p) cfg.discount = +(o - p).toFixed(2);
+  }
   return cfg;
+}
+
+/* 从完整地址里取出「送至 XX...」的片段：最后一个行政关键字之后的街道部分 */
+function cut(s) { s = s.trim(); return s.length > 6 ? s.slice(0, 6) + '...' : s; }
+function shortAddress(addr) {
+  const s = String(addr).split(/[，,]/).map(x => x.trim()).filter(Boolean).pop() || String(addr);
+  const KW = ['街道', '镇', '区', '县', '市', '乡', '村', '省'];
+  let idx = -1, kw = '';
+  for (const k of KW) { const i = s.lastIndexOf(k); if (i > idx) { idx = i; kw = k; } }
+  if (idx < 0) return cut(s);
+  const after = s.slice(idx + kw.length);
+  // 后面是打码（*）或为空时，退回显示「XX镇/区」本身
+  if (!after.replace(/[*·xX\s]/g, '')) return cut(s.slice(Math.max(0, idx - 2), idx + kw.length));
+  return cut(after);
 }
 
 /* ================= 渲染 ================= */
@@ -562,8 +614,9 @@ function render(cfg) {
   document.getElementById('total-amount').textContent = cfg.price;
   document.getElementById('discount-amount').textContent = money(cfg.discount);
   document.getElementById('gift-tag').textContent = '首单礼金抵¥' + cfg.discount;
+  document.getElementById('logi-status').textContent = cfg.status;
   document.getElementById('logi-addr').textContent =
-    cfg.name + ' ' + cfg.phone + ' 送至 ' + cfg.address.split(' ').slice(0, 3).join(' ') + '...';
+    cfg.name + ' ' + cfg.phone + ' 送至 ' + shortAddress(cfg.address);
   document.getElementById('recv-info').textContent =
     cfg.name + '，' + cfg.phone + '，' + cfg.address;
   document.getElementById('order-id').textContent = cfg.orderId;
@@ -593,6 +646,7 @@ function fillForm(cfg) {
   set('cfg-ship-time', cfg.shipTime);
   set('cfg-order-id', cfg.orderId);
   set('cfg-shop-name', cfg.shopName);
+  set('cfg-status', cfg.status);
 }
 
 function openConfig() {
@@ -608,7 +662,8 @@ function closeConfig() {
 function saveConfig() {
   const get = id => document.getElementById(id).value.trim();
   const cfg = getConfig();
-  const imageUrl = get('cfg-image-url') || cfg.imageUrl;
+  const imageUrl = pickedImageDataUrl || get('cfg-image-url') || cfg.imageUrl;
+  pickedImageDataUrl = null;
   const next = {
     ...cfg,
     imageUrl,
@@ -623,7 +678,8 @@ function saveConfig() {
     payTime: get('cfg-pay-time') || cfg.payTime,
     shipTime: get('cfg-ship-time') || cfg.shipTime,
     orderId: get('cfg-order-id') || cfg.orderId,
-    shopName: get('cfg-shop-name') || cfg.shopName
+    shopName: get('cfg-shop-name') || cfg.shopName,
+    status: get('cfg-status') || cfg.status
   };
   localStorage.setItem('tb-order-cfg', JSON.stringify(next));
   render(next);
@@ -651,17 +707,39 @@ function onImageFilePick(input) {
   };
   reader.readAsDataURL(file);
 }
-// 保存时若选择了本地图片，优先使用
-const _origSave = saveConfig;
-saveConfig = function () {
-  if (pickedImageDataUrl) {
-    document.getElementById('cfg-image-url').value = pickedImageDataUrl;
-  }
-  _origSave();
-  pickedImageDataUrl = null;
-};
 
 /* ================= 工具 ================= */
+/* 生成带配置参数的分享链接并复制 */
+function copyConfigLink() {
+  const cfg = getConfig();
+  const pairs = {
+    img: cfg.imageUrl === DEFAULTS.imageUrl ? '' : cfg.imageUrl,
+    title: cfg.title, price: cfg.price, origPrice: cfg.origPrice, discount: cfg.discount,
+    name: cfg.name, phone: cfg.phone, address: cfg.address,
+    orderId: cfg.orderId, tradeNo: cfg.tradeNo,
+    createTime: cfg.createTime, payTime: cfg.payTime, shipTime: cfg.shipTime,
+    shopName: cfg.shopName, status: cfg.status
+  };
+  const qs = new URLSearchParams();
+  for (const [k, v] of Object.entries(pairs)) {
+    if (v && String(v) !== String(DEFAULTS[k] ?? '')) qs.set(k, v);
+  }
+  const url = location.origin + location.pathname + (qs.toString() ? '?' + qs.toString() : '');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => toast('配置链接已复制'));
+  } else {
+    toast('复制失败，请手动复制');
+  }
+}
+
+/* 商品图大图预览 */
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
 function copyOrderId() {
   const text = document.getElementById('order-id').textContent;
   if (navigator.clipboard) {
