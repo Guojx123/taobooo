@@ -439,6 +439,7 @@ const DEFAULTS = {
   payTime: '2026-09-01 16:39:48',
   shipTime: '2026-09-01 17:55:52',
   shopName: '万千少女梦',
+  avatar: 'img/avatar.jpg',
   shopDesc: '88VIP好评率93%，客服平均22秒回复',
   status: '已签收'
 };
@@ -452,7 +453,7 @@ function getConfig() {
     if (v !== null && v !== '') cfg[key] = v;
   }
   // 兼容别名
-  const alias = { img: 'imageUrl', image: 'imageUrl', orig: 'origPrice' };
+  const alias = { img: 'imageUrl', image: 'imageUrl', orig: 'origPrice', headimg: 'avatar', shopimg: 'avatar' };
   for (const [k, field] of Object.entries(alias)) {
     const v = qs.get(k);
     if (v) cfg[field] = v;
@@ -489,6 +490,7 @@ function shortAddress(addr) {
 
 function render(cfg) {
   document.getElementById('product-image').src = cfg.imageUrl;
+  document.getElementById('shop-avatar').src = cfg.avatar;
   document.getElementById('product-title').textContent = cfg.title;
   document.getElementById('product-spec').textContent = cfg.spec;
   document.getElementById('product-qty').textContent = cfg.qty;

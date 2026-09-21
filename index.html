@@ -272,6 +272,20 @@
           </div>
         </div>
         <div class="field">
+          <label>店铺头像</label>
+          <div class="img-row">
+            <img class="img-preview" id="avatar-preview" src="img/avatar.jpg" alt="头像预览" style="width:56px;height:56px;border-radius:50%;object-fit:cover">
+            <div class="img-ops">
+              <input type="text" id="f-avatar" placeholder="头像图片 URL（https://...）">
+              <div class="ops">
+                <button class="link-btn" onclick="document.getElementById('f-avatarfile').click()">上传本地图片</button>
+                <button class="link-btn" onclick="useDefaultAvatar()">使用默认头像</button>
+              </div>
+              <input type="file" id="f-avatarfile" accept="image/*" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="field">
           <label>店铺名称</label>
           <input type="text" id="f-shopName">
         </div>
@@ -332,6 +346,7 @@ const DEFAULTS = {
   payTime: '2026-09-01T16:39:48',
   shipTime: '2026-09-01T17:55:52',
   shopName: '万千少女梦',
+  avatar: 'img/avatar.jpg',
   status: '已签收'
 };
 
@@ -339,7 +354,7 @@ const $ = id => document.getElementById(id);
 
 /* 表单字段 id 映射 */
 const FIELDS = ['imageUrl','title','spec','qty','price','origPrice','name','phone',
-                'address','orderId','createTime','payTime','shipTime','shopName','status'];
+                'address','orderId','createTime','payTime','shipTime','shopName','avatar','status'];
 
 /* ================= 预填：URL 参数优先 ================= */
 function prefill() {
@@ -381,12 +396,13 @@ function updatePreview() {
 }
 function updatePreviewImage() {
   $('img-preview').src = $('f-imageUrl').value || DEFAULTS.imageUrl;
+  $('avatar-preview').src = $('f-avatar').value || DEFAULTS.avatar;
 }
 
 /* 输入即刷新预览 */
 FIELDS.forEach(key => {
   const el = $('f-' + key);
-  el.addEventListener('input', () => { if (key === 'imageUrl') updatePreviewImage(); updatePreview(); });
+  el.addEventListener('input', () => { if (key === 'imageUrl' || key === 'avatar') updatePreviewImage(); updatePreview(); });
   el.addEventListener('change', updatePreview);
 });
 
@@ -418,6 +434,25 @@ function useDefaultImage() {
   updatePreviewImage();
   updatePreview();
   toast('已使用默认商品图');
+}
+
+/* ================= 店铺头像 ================= */
+$('f-avatarfile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    $('f-avatar').value = ev.target.result;
+    updatePreviewImage();
+    updatePreview();
+  };
+  reader.readAsDataURL(file);
+});
+function useDefaultAvatar() {
+  $('f-avatar').value = DEFAULTS.avatar;
+  updatePreviewImage();
+  updatePreview();
+  toast('已使用默认头像');
 }
 
 /* ================= 操作 ================= */
