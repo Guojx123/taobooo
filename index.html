@@ -152,13 +152,16 @@
     position: fixed; bottom: 0; left: 50%; transform: translate(-50%, 105%);
     width: 100%; max-width: 480px; max-height: 88dvh;
     background: #fff; border-radius: 16px 16px 0 0; z-index: 50;
-    padding: 16px; transition: transform .28s ease; overflow: hidden;
+    padding: 16px; transition: transform .28s ease; overflow-y: auto; -webkit-overflow-scrolling: touch;
   }
   .pv-drawer.show { transform: translate(-50%, 0); }
   .pv-drawer .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 15px; font-weight: 700; }
   .pv-drawer .head .close { font-size: 22px; color: #999; cursor: pointer; font-weight: 400; }
-  .pv-drawer .preview-shell { aspect-ratio: 390 / 700; }
+  .pv-drawer .preview-shell { aspect-ratio: 390 / 700; max-width: 100%; margin: 0 auto; }
   .pv-drawer iframe { height: 700px; }
+  @media (max-height: 700px) {
+    .pv-drawer .preview-shell { aspect-ratio: auto; height: calc(88dvh - 70px); }
+  }
 </style>
 </head>
 <body data-page-node-id="visCp99XJ1S12ljlMb5Wlj">
