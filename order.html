@@ -1,422 +1,454 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-page-node-id="WwurdkWkQHWP15oA532Ktu">
-<head data-page-node-id="VETNRWBLl5savFNmdvvbk9">
-<meta charset="UTF-8" data-page-node-id="oyTDhoFTH1NagrK6xwAB6n">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" data-page-node-id="SNmRaXDG288JYxzGFKCDia">
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>订单详情 - 交易成功</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ff5000'/%3E%3Cpath d='M9 12 h14 M9 17 h14 M9 22 h9' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E" data-page-node-id="ibtE5TiXnBwcuzJg25UVOz">
 <style>
-  :root {
-    --bg: #f4f4f4;
-    --card: #ffffff;
-    --text-main: #333333;
-    --text-sub: #999999;
-    --orange: #ff5000;
-    --red: #ff0036;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: #ececec;
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-  }
-  /* ============ 手机容器 ============ */
-  .phone {
-    width: 100%;
-    max-width: 420px;
-    min-height: 100vh;
-    min-height: 100dvh;
-    background: var(--bg);
-    position: relative;
-    padding-bottom: calc(96px + env(safe-area-inset-bottom));
-  }
-  @media (min-width: 500px) {
-    body { align-items: flex-start; }
-    .phone { box-shadow: 0 4px 32px rgba(0,0,0,.16); border-radius: 18px; }
-    .status-bar { border-radius: 18px 18px 0 0; }
-  }
+    /* ================= 基础重置 ================= */
+    :root {
+        --bg: #f5f5f5;
+        --card: #ffffff;
+        --text-main: #333333;
+        --text-sub: #999999;
+        --orange: #ff4400;      /* 修正：更接近截图的橘红色 */
+        --rose: #ff2d78;        /* 修正：共减XX元用玫红色 */
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        background: #ececec;
+        color: var(--text-main);
+        display: flex;
+        justify-content: center;
+        overflow-x: hidden;
+        -webkit-text-size-adjust: 100%;
+    }
 
-  /* ============ 状态栏 ============ */
-  .status-bar {
-    height: 44px;
-    background: var(--card);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 22px;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  .status-right { display: flex; align-items: center; gap: 6px; }
-  .signal-bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
-  .signal-bars i { display: block; width: 3.5px; background: #333; border-radius: 1px; }
-  .signal-bars i:nth-child(1){height:4.5px}.signal-bars i:nth-child(2){height:6.5px}
-  .signal-bars i:nth-child(3){height:9px}.signal-bars i:nth-child(4){height:12px}
-  .net-tag { font-size: 11px; font-weight: 800; letter-spacing: .3px; }
-  .battery-num {
-    font-size: 10px; font-weight: 700; background:#2b2b2b; color:#fff;
-    border-radius: 4px; padding: 1px 4px; line-height: 1.35;
-    display:flex; align-items:center; position: relative; margin-right: 3px;
-  }
-  .battery-num::after {
-    content: ""; position: absolute; right: -3px; top: 50%; transform: translateY(-50%);
-    width: 1.5px; height: 5px; background: #2b2b2b; border-radius: 0 1px 1px 0;
-  }
+    /* ============ 手机容器 ============ */
+    .phone {
+        width: 100%;
+        max-width: 420px;
+        min-height: 100vh;
+        min-height: 100dvh;
+        background: var(--bg);
+        position: relative;
+        padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+    @media (min-width: 500px) {
+        body { align-items: flex-start; }
+        .phone { box-shadow: 0 4px 32px rgba(0,0,0,.16); border-radius: 18px; }
+        .status-bar { border-radius: 18px 18px 0 0; }
+    }
 
-  /* ============ 导航栏 ============ */
-  .nav {
-    height: 50px;
-    background: var(--card);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 18px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .nav .icon-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .nav .title { font-size: 17px; font-weight: 700; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
-  .nav .dots { display: flex; gap: 3px; cursor: pointer; padding: 6px 2px; }
-  .nav .dots i { width: 4.5px; height: 4.5px; border-radius: 50%; background: #333; }
+    /* ============ 状态栏 ============ */
+    .status-bar {
+        height: 44px;
+        background: var(--card);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .status-right { display: flex; align-items: center; gap: 6px; }
+    .signal-bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+    .signal-bars i { display: block; width: 3.5px; background: #333; border-radius: 1px; }
+    .signal-bars i:nth-child(1){height:4.5px}.signal-bars i:nth-child(2){height:6.5px}
+    .signal-bars i:nth-child(3){height:9px}.signal-bars i:nth-child(4){height:12px}
+    .net-tag { font-size: 11px; font-weight: 800; letter-spacing: .3px; }
+    .battery-num {
+        font-size: 10px; font-weight: 700; background:#2b2b2b; color:#fff;
+        border-radius: 4px; padding: 1px 4px; line-height: 1.35;
+        display:flex; align-items:center; position: relative; margin-right: 3px;
+    }
+    .battery-num::after {
+        content: ""; position: absolute; right: -3px; top: 50%; transform: translateY(-50%);
+        width: 1.5px; height: 5px; background: #2b2b2b; border-radius: 0 1px 1px 0;
+    }
 
-  /* ============ 卡片通用 ============ */
-  .card {
-    background: var(--card);
-    margin-top: 10px;
-    animation: rise .32s ease both;
-  }
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .card { animation: none; }
-  }
+    /* ============ 导航栏 ============ */
+    .nav {
+        height: 50px;
+        background: var(--card);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .nav .icon-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .nav .title { font-size: 17px; font-weight: 700; position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+    .nav .dots { display: flex; gap: 3px; cursor: pointer; padding: 6px 2px; }
+    .nav .dots i { width: 4.5px; height: 4.5px; border-radius: 50%; background: #333; }
 
-  /* ============ 物流栏 ============ */
-  .logistics { display: flex; align-items: center; gap: 9px; padding: 12px 16px; cursor: pointer; min-width: 0; }
-  .logistics .pkg-icon { flex-shrink: 0; }
-  .logistics .status { font-size: 16px; font-weight: 700; color: #222; flex-shrink: 0; }
-  .logistics .divider { color: #e0e0e0; margin: 0 4px; flex-shrink: 0; font-weight: 300; }
-  .logistics .addr { font-size: 14px; color: #555; display: flex; align-items: center; gap: 5px; min-width: 0; flex: 1; }
-  .logistics .addr .user { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
-  .logistics .addr .text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .logistics .addr .text b { color: #222; font-weight: 700; }
-  .logistics .arrow { color: #bbb; font-size: 15px; flex-shrink: 0; }
+    /* ============ 卡片通用 ============ */
+    .card {
+        background: var(--card);
+        margin-top: 10px;
+    }
 
-  /* ============ 店铺 + 商品（同卡） ============ */
-  .shop { display: flex; align-items: center; gap: 11px; padding: 14px 16px 2px; }
-  .shop .avatar {
-    width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-    background: linear-gradient(135deg, #6db3f2, #1e69c8);
-    flex-shrink: 0;
-  }
-  .shop .info { flex: 1; min-width: 0; }
-  .shop .name { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .shop .desc { font-size: 12px; color: var(--text-sub); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .shop .enter { font-size: 13px; color: #666; display: flex; align-items: center; gap: 3px; flex-shrink: 0; cursor: pointer; }
-  .shop .enter .arrow { color: #b0b0b0; }
+    /* ============ 物流栏 ============ */
+    .logistics { 
+        display: flex; align-items: center; gap: 9px; 
+        padding: 12px 16px; cursor: pointer; 
+        min-width: 0; background: #fff;
+    }
+    .logistics .pkg-icon { flex-shrink: 0; }
+    .logistics .status { font-size: 16px; font-weight: 700; color: var(--orange); flex-shrink: 0; }
+    .logistics .divider { color: #e0e0e0; margin: 0 4px; flex-shrink: 0; font-weight: 300; }
+    
+    .logistics .addr { font-size: 13.5px; color: #333; display: flex; align-items: center; gap: 5px; min-width: 0; flex: 1; }
+    .logistics .addr .user { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+    .logistics .addr .text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #333; }
+    /* 修正：姓名和电话恢复标准加粗 700 */
+    .logistics .addr .text b { color: #333; font-weight: 700; }
+    .logistics .addr .text .sub-addr { color: #333; font-weight: 400; }
+    .logistics .arrow { flex-shrink: 0; display: flex; align-items: center; }
 
-  .product { padding: 12px 16px 14px; }
-  .product-main { display: flex; gap: 11px; }
-  .product .pic {
-    width: 94px; height: 94px; border-radius: 10px; flex-shrink: 0;
-    object-fit: cover; background: #dceefb; cursor: zoom-in;
-  }
-  .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-  .product .row1 { display: flex; gap: 12px; }
-  .product .title {
-    font-size: 14px; line-height: 1.5; flex: 1; color: #333;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  }
-  .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
-  .product .fold { font-size: 12px; color: #999; line-height: 1.2; cursor: pointer; }
-  .product .orig-price { font-size: 14px; color: #333; }
-  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; gap: 8px; }
-  .product .spec { font-size: 12px; color: #999; background: #f5f5f5; padding: 1px 6px; border-radius: 3px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .product .qty { font-size: 13px; color: #666; flex-shrink: 0; }
-  .product .tags { display: flex; gap: 7px; margin-top: 7px; align-items: center; flex-wrap: wrap; }
-  .tag { font-size: 11px; padding: 1.5px 5px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; }
-  .tag-fast { color: #00b578; background: #e8f8f1; }
-  .tag-fast svg { flex-shrink: 0; }
-  .tag-return { color: #999; background: #f5f5f5; }
-  .tag-return .arrow { font-size: 9px; color: #bbb; }
-  .product .pay-row { display: flex; align-items: baseline; gap: 7px; margin-top: 8px; }
-  .product .pay-label { font-size: 13px; color: #333; font-weight: 500; }
-  .product .pay-price { font-size: 18px; color: var(--orange); font-weight: 700; letter-spacing: -.2px; }
-  .product .pay-detail { font-size: 12px; color: #666; display: inline-flex; align-items: center; gap: 2px; cursor: pointer; }
-  .product .pay-detail .arrow { color: var(--orange); font-size: 12px; }
-  .product .actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-  .btn {
-    font-size: 14px; padding: 9px 19px; border-radius: 8px; line-height: 1;
-    border: none; background: #f1f3f6; color: #1f1f1f; font-weight: 500;
-    cursor: pointer; font-family: inherit; letter-spacing: .2px;
-    -webkit-appearance: none;
-  }
-  .btn:active { opacity: .8; }
-  .btn-orange { color: #ff5000; background: #fdf0e7; }
+    /* ============ 店铺 + 商品 ============ */
+    .shop { display: flex; align-items: center; gap: 11px; padding: 14px 16px 2px; }
+    .shop .avatar {
+        width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+        background: linear-gradient(135deg, #6db3f2, #1e69c8); flex-shrink: 0;
+    }
+    .shop .info { flex: 1; min-width: 0; }
+    .shop .name { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .shop .desc { font-size: 12px; color: var(--text-sub); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .shop .enter { font-size: 13px; color: #333; display: flex; align-items: center; gap: 2px; flex-shrink: 0; cursor: pointer; }
 
-  /* ============ 价格摘要 ============ */
-  .summary { padding: 14px 16px; }
-  .summary .sum-row { display: flex; align-items: center; }
-  .summary .label { font-size: 17px; font-weight: 700; }
-  .summary .discount { font-size: 13px; color: var(--red); font-weight: 600; margin-left: 10px; }
-  .summary .detail-link {
-    font-size: 14px;
-    border-radius: 999px; padding: 2px 11px; margin-left: 8px;
-    background: linear-gradient(90deg, rgba(255,241,243,.55), rgba(255,233,246,.75));
-    border: 1px solid #fbc9da;
-    display: inline-flex; align-items: center; gap: 4px; cursor: pointer;
-    flex-shrink: 0;
-  }
-  .summary .detail-link .dlt {
-    background: linear-gradient(90deg, #ff7a00, #ff2d78 62%, #c04bff);
-    -webkit-background-clip: text; background-clip: text;
-    color: transparent; font-weight: 500;
-  }
-  .summary .detail-link .arrow { color: #ff2d78; font-size: 13px; font-weight: 600; }
-  .summary .amount { margin-left: auto; font-size: 20px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 5px; letter-spacing: -.3px; }
-  .summary .amount .chevron { font-size: 13px; color: #666; font-weight: 400; }
-  .summary .coupon-row { margin-top: 10px; display: flex; }
-  .summary   .gift-tag {
-    font-size: 12px; color: #3d4757; background: #eef1f6;
-    border-radius: 4px; padding: 3px 8px; display: inline-flex; align-items: center; gap: 5px;
-  }
+    .product { padding: 12px 16px 14px; }
+    .product-main { display: flex; gap: 11px; }
+    .product .pic {
+        width: 90px; height: 90px; border-radius: 4px; flex-shrink: 0;
+        object-fit: cover; background: #dceefb; cursor: zoom-in;
+    }
+    .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .product .row1 { display: flex; gap: 12px; }
+    .product .title {
+        font-size: 14px; line-height: 1.4; flex: 1; color: #333;
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
+    .product .fold { display: flex; cursor: pointer; }
+    /* 修正：原价字重改回常规 400 */
+    .product .orig-price { font-size: 15px; color: #222; font-weight: 400; }
+    .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; gap: 8px; }
+    .product .spec { font-size: 12px; color: #999; background: #f5f5f5; padding: 1px 6px; border-radius: 3px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .product .qty { font-size: 13px; color: #999; flex-shrink: 0; }
+    .product .tags { display: flex; gap: 6px; margin-top: 7px; align-items: center; flex-wrap: wrap; }
+    .tag { font-size: 11px; padding: 1px 5px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; }
+    .tag-fast { color: #00b578; background: #e8f8f1; }
+    .tag-return { color: #999; background: #f5f5f5; }
+    .tag-return .arrow { display: inline-flex; align-items: center; }
+    .product .pay-row { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
+    /* 修正：“实付价”标签改为常规字重 400 */
+    .product .pay-label { font-size: 13px; color: var(--orange); font-weight: 400; }
+    .product .pay-price { font-size: 20px; color: var(--orange); font-weight: 700; letter-spacing: -.3px; }
+    .product .pay-detail { font-size: 12px; color: var(--orange); display: inline-flex; align-items: center; gap: 2px; cursor: pointer; }
+    .product .pay-detail .arrow { display: inline-flex; align-items: center; }
+    .product .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+    /* 修正：按钮文字统一改为常规字重 400 */
+    .btn {
+        font-size: 13px; padding: 8px 14px; border-radius: 4px; line-height: 1;
+        border: none; background: #f5f5f5; color: #333; font-weight: 400;
+        cursor: pointer; font-family: inherit;
+    }
+    .btn-orange { color: var(--orange); background: #fff0e6; }
 
-  /* ============ 订单信息 ============ */
-  .order { padding: 14px 16px 6px; }
-  .order .head { display: flex; align-items: center; padding-bottom: 10px; gap: 4px; }
-  .order .head .label { font-size: 17px; font-weight: 700; flex-shrink: 0; }
-  .order .head .count { font-size: 12px; color: #999; }
-  .order .head .chevron { font-size: 11px; color: #999; }
-  .order .head .oid { margin-left: auto; font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 48%; }
-  .order .copy { font-size: 14px; color: #666; margin-left: 10px; flex-shrink: 0; cursor: pointer; }
-  .order .row {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 10px 0; font-size: 14px; line-height: 1.55;
-  }
-  .order .row .k { color: #333; flex-shrink: 0; }
-  .order .row .k .emo { display: inline-flex; vertical-align: -1px; margin-left: 5px; }
-  .order .row .v { color: #666; text-align: right; margin-left: 28px; word-break: break-all; }
-  .order .row .v.dim { color: #8a8a8a; }
+    /* ============ 价格摘要 ============ */
+    .summary { padding: 14px 16px; }
+    .summary .sum-row { display: flex; align-items: center; }
+    .summary .label { font-size: 16px; font-weight: 700; color: #333; }
+    /* 修正：共减XX元加重为 700 */
+    .summary .discount { font-size: 13px; color: var(--rose); font-weight: 700; margin-left: 10px; }
+    .summary .detail-link {
+        font-size: 13px; border-radius: 999px; padding: 2px 10px; margin-left: 8px;
+        background: linear-gradient(90deg, #fff1f3, #ffe9f6);
+        border: 1px solid #fbc9da;
+        display: inline-flex; align-items: center; gap: 3px; cursor: pointer;
+        flex-shrink: 0;
+    }
+    .summary .detail-link .dlt {
+        background: linear-gradient(90deg, #ff7a00, #ff2d78);
+        -webkit-background-clip: text; background-clip: text;
+        color: transparent; font-weight: 600;
+    }
+    .summary .detail-link .arrow { display: inline-flex; align-items: center; }
+    .summary .amount { margin-left: auto; font-size: 20px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .summary .amount .chevron { display: inline-flex; align-items: center; }
+    .summary .coupon-row { margin-top: 10px; display: flex; }
+    .summary .gift-tag {
+        font-size: 12px; color: #666; background: #f5f5f5;
+        border-radius: 4px; padding: 3px 8px; display: inline-flex; align-items: center; gap: 5px;
+    }
 
-  /* ============ 底部操作栏 ============ */
-  .bottom-bar {
-    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 420px;
-    background: var(--card);
-    display: flex; align-items: center;
-    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-    gap: 9px; z-index: 20;
-    box-shadow: 0 -1px 0 rgba(0,0,0,.03);
-  }
-  .bb-icon { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: #666; cursor: pointer; flex-shrink: 0; width: 40px; }
-  .bb-btn {
-    flex: 1; height: 34px; border-radius: 9px; border: none;
-    background: #f1f3f6; color: #1f1f1f; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit;
-    min-width: 0; padding: 0 2px; line-height: 1; letter-spacing: .2px;
-    -webkit-appearance: none;
-  }
-  .bb-btn:active { opacity: .8; }
-  .bb-btn-primary {
-    flex: 1.3; height: 34px; border-radius: 9px; border: none; color: #fff;
-    font-weight: 600; font-size: 15px; letter-spacing: .5px; line-height: 1;
-    background: linear-gradient(90deg, #ff7a00, #ff4f00);
-  }
+    /* ============ 订单信息 ============ */
+    .order { padding: 14px 16px 6px; }
+    .order .head { display: flex; align-items: center; padding-bottom: 10px; gap: 4px; }
+    .order .head .label { font-size: 16px; font-weight: 700; color: #333; }
+    .order .head .count { font-size: 12px; color: #999; }
+    .order .head .chevron { display: inline-flex; align-items: center; }
+    .order .head .oid { margin-left: auto; font-size: 13px; color: #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 48%; }
+    .order .copy { font-size: 13px; color: #666; margin-left: 10px; flex-shrink: 0; cursor: pointer; }
+    .order .row {
+        display: flex; justify-content: space-between; align-items: flex-start;
+        padding: 11px 0; font-size: 14px; line-height: 1.5;
+    }
+    .order .row .k { color: #333; flex-shrink: 0; font-weight: 400; }
+    .order .row .k .emo { display: inline-flex; vertical-align: -1px; margin-left: 5px; }
+    .order .row .v { color: #999; text-align: right; margin-left: 28px; word-break: break-all; font-weight: 400; }
+    .order .row .v.dim { color: #999; }
 
-  /* ============ 编辑入口 & lightbox & toast ============ */
-  .edit-fab {
-    position: fixed; right: max(16px, calc(50% - 210px + 16px)); bottom: calc(116px + env(safe-area-inset-bottom));
-    height: 40px; padding: 0 16px; border-radius: 20px;
-    background: #333; color: #fff; border: none; font-size: 13px;
-    cursor: pointer; z-index: 30; box-shadow: 0 4px 12px rgba(0,0,0,.25);
-    display: flex; align-items: center; gap: 5px;
-  }
-  .lightbox {
-    position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 60;
-    display: none; align-items: center; justify-content: center; padding: 24px;
-  }
-  .lightbox.show { display: flex; }
-  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; }
-  .toast {
-    position: fixed; top: 45%; left: 50%; transform: translate(-50%,-50%);
-    background: rgba(0,0,0,.75); color: #fff; font-size: 14px;
-    padding: 10px 20px; border-radius: 8px; z-index: 99;
-    opacity: 0; pointer-events: none; transition: opacity .25s;
-    max-width: 80vw; text-align: center;
-  }
-  .toast.show { opacity: 1; }
+    /* ============ 底部操作栏 ============ */
+    .bottom-bar {
+        position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+        width: 100%; max-width: 420px;
+        background: var(--card);
+        display: flex; align-items: center;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        gap: 8px; z-index: 20;
+        box-shadow: 0 -1px 0 rgba(0,0,0,.03);
+    }
+    .bb-icon { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: #666; cursor: pointer; flex-shrink: 0; width: 40px; }
+    /* 修正：底部按钮普通状态字重改回 400 */
+    .bb-btn {
+        flex: 1; height: 36px; border-radius: 4px; border: none;
+        background: #f5f5f5; color: #333; font-size: 13px; font-weight: 400; cursor: pointer; font-family: inherit;
+        min-width: 0; padding: 0 4px; line-height: 1; letter-spacing: .2px;
+    }
+    /* 修正：底部主按钮加重为 700 */
+    .bb-btn-primary {
+        flex: 1.4; height: 36px; border-radius: 4px; border: none; color: #fff;
+        font-weight: 700; font-size: 14px; letter-spacing: .5px; line-height: 1;
+        background: var(--orange);
+    }
+
+    /* ============ 编辑入口（滑动时显示，停止 2 秒后隐藏） ============ */
+    .edit-fab {
+        position: fixed; right: max(16px, calc(50% - 210px + 16px)); bottom: calc(116px + env(safe-area-inset-bottom));
+        height: 40px; padding: 0 16px; border-radius: 20px;
+        background: #333; color: #fff; border: none; font-size: 13px;
+        cursor: pointer; z-index: 30; box-shadow: 0 4px 12px rgba(0,0,0,.25);
+        display: flex; align-items: center; gap: 5px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .3s ease;
+    }
+    .edit-fab.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* ============ lightbox & toast ============ */
+    .lightbox {
+        position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 60;
+        display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .lightbox.show { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; }
+    .toast {
+        position: fixed; top: 45%; left: 50%; transform: translate(-50%,-50%);
+        background: rgba(0,0,0,.75); color: #fff; font-size: 14px;
+        padding: 10px 20px; border-radius: 8px; z-index: 99;
+        opacity: 0; pointer-events: none; transition: opacity .25s;
+        max-width: 80vw; text-align: center;
+    }
+    .toast.show { opacity: 1; }
 </style>
 </head>
-<body data-page-node-id="7SMuFNIGJ3i8yjgwNTrh59">
-<div class="phone" data-page-node-id="H546H07yEzNpD7yzGSdLlG">
+<body>
+<div class="phone">
 
-  <!-- 状态栏 -->
-  <div class="status-bar" data-page-node-id="WZv5SJtazkiTz5ib2EGFTS">
-    <span data-page-node-id="2echN8H1NYiyhb8xeFd8K0">08:43</span>
-    <div class="status-right" data-page-node-id="wZ9AfEZ7UkYWWddWDZIHCb">
-      <div class="signal-bars" data-page-node-id="721ESuUao7zju5gAsgJksX"><i data-page-node-id="s8y1DtcEkq1gaZxtAKnJ4D"></i><i data-page-node-id="S0guuPBGCcoGDFGrZ7WEDn"></i><i data-page-node-id="qAOakO6h8HQWwscAdYdEzu"></i><i data-page-node-id="PLpUfbQZuHqb8aMLNs1RkP"></i></div>
-      <span class="net-tag" data-page-node-id="11efu57W3aWPYddfPkx84A">5GA</span>
-      <span class="battery-num" data-page-node-id="s4goBqzML0Akb0rutH3jjh">66</span>
-    </div>
-  </div>
-
-  <!-- 导航栏 -->
-  <div class="nav" data-page-node-id="C0hYORE49e4zDIht76xDkw">
-    <div class="icon-btn" onclick="goBack()" data-page-node-id="n49CgOBpcANnQ5SmQnexHG">
-      <svg width="21" height="21" viewBox="0 0 20 20" data-page-node-id="pg1hb15gdlF36tfrArUYBm"><path d="M12.5 3 L6 10 L12.5 17" stroke="#333" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="ZudGodGTlZ3UMKHgqOvarT"/></svg>
-    </div>
-    <div class="title" data-page-node-id="e0aKDGGs70krLpljmrM7Ka">交易成功</div>
-    <div class="dots" onclick="toast('更多')" data-page-node-id="Zxqn9strfcAs73MLbK5Dvk"><i data-page-node-id="tg5yKKzizFae5P0BD68gWU"></i><i data-page-node-id="M9NTMCYK1sJ8OJzkeHycOm"></i><i data-page-node-id="Ma6i1RBzGHfysPo28u8W7g"></i></div>
-  </div>
-
-  <!-- 物流栏 -->
-  <div class="card logistics" onclick="toast('查看物流')" data-page-node-id="cGVJaB7jInL68HgTg5O7kA">
-    <svg class="pkg-icon" width="24" height="24" viewBox="0 0 24 24" data-page-node-id="RVO0BMgAYKLf6NY6aLSL0j">
-      <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#ff5000" stroke-width="2.3" data-page-node-id="nwEiP1zEeVAdUIpLAkn3pD"/>
-      <path d="M9 2.5 V6.8 Q9 7.8 10 7.8 H14 Q15 7.8 15 6.8 V2.5" fill="none" stroke="#ff5000" stroke-width="2.3" stroke-linejoin="round" data-page-node-id="da1XomLjrolNzZR4bLeI5g"/>
-    </svg>
-    <span class="status" id="logi-status" data-page-node-id="kxiLPXeEcUcqkeKSPTaTIJ">已签收</span>
-    <span class="divider" data-page-node-id="wezopzVDzZmx6SJpfs5WGI">|</span>
-    <div class="addr" data-page-node-id="3gNM352ouZujmrRjToH8uD">
-      <span class="user" data-page-node-id="A5WoatjyTer1tXsQGrXsso">
-        <span class="text" id="logi-addr" data-page-node-id="RC8dcmse6jzX7BIjXpN7vK">困 86-189****0880 送至 里水大道...</span>
-      </span>
-    </div>
-    <span class="arrow" data-page-node-id="LdX6RunEFbsFbPePkxyn5s">›</span>
-  </div>
-
-  <!-- 店铺 + 商品 -->
-  <div class="card" data-page-node-id="uGJ4Tz2wTTPyihb59YXc8Z">
-    <div class="shop" data-page-node-id="r2gjPeuUWYJf7aYONEoX4x">
-      <img class="avatar" id="shop-avatar" src="img/avatar.jpg" alt="店铺头像" data-page-node-id="ZOAtxrNmnrRNgD72kti1xQ">
-      <div class="info" data-page-node-id="wRlZMoPfYDhBk5Jah5WywF">
-        <div class="name" id="shop-name" data-page-node-id="T7nyAkfyVGeoCKTzCt3DJV">万千少女梦</div>
-        <div class="desc" id="shop-desc" data-page-node-id="4pAb4FGzdUvR1eS66svTCI">88VIP好评率93%，客服平均22秒回复</div>
-      </div>
-      <div class="enter" onclick="toast('进店逛逛')" data-page-node-id="2wWD8KpsWGM6dPmyiyxJif">进店逛逛 <span class="arrow" data-page-node-id="GAwJj4diZhhI4dNpiYQxRc">›</span></div>
-    </div>
-
-    <div class="product" data-page-node-id="6DylPwcyTJD1dAlUwl051C">
-      <div class="product-main" data-page-node-id="9SD4F5y40Ddj6edU0PNHja">
-        <img class="pic" id="product-image" src="img/product.jpg" alt="商品图" onclick="openLightbox(this.src)" data-page-node-id="X5PsiclGHiNslSF2TsO9HK">
-        <div class="detail" data-page-node-id="wOlFK4Mx1XAdMhNdk6CEJe">
-          <div class="row1" data-page-node-id="t9fW9oNZ74amq9riSx6gP1">
-            <div class="title" id="product-title" data-page-node-id="6FbmWowJwzYIppyLpVrn5o">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
-            <div class="side" data-page-node-id="ysmBifYdK7yIx2FFwWOTyV">
-              <span class="fold" onclick="toast('收起')" data-page-node-id="Eo7tr8lGSRzhuj4lNvo0JQ">˄</span>
-              <span class="orig-price" id="orig-price" data-page-node-id="03NH5VL0imVanIEHXNdq71">¥5.99</span>
-            </div>
-          </div>
-          <div class="row2" data-page-node-id="Ipa6EOCyCfUduuA6oE0ZDg">
-            <span class="spec" id="product-spec" data-page-node-id="FahOBslwEmCX1bm3PFfjez">蓝咖撞色波点BB夹【四件套】</span>
-            <span class="qty" data-page-node-id="PLJ2S5rZVsi6azBBcbcaGJ">x<span id="product-qty" data-page-node-id="QFftgejd3LxHASfKApMYp7">1</span></span>
-          </div>
-          <div class="tags" data-page-node-id="y990NPQPMqnrhWisfTuCTm">
-            <span class="tag tag-fast" data-page-node-id="18ixjU51ogFReS1oM8HMh3">
-              极速退款
-            </span>
-            <span class="tag tag-return" data-page-node-id="TpWQbbNDMO82j97nKheWnB">7天无理由退货 <span class="arrow" data-page-node-id="4sQrbOuzvGvuktYC3FUKVN">›</span></span>
-          </div>
-          <div class="pay-row" data-page-node-id="hZ95GbDYGmc5oPB6QzOJfz">
-            <span class="pay-label" data-page-node-id="URTppMzx2eZeTAuJdYdErg">实付价</span>
-            <span class="pay-price" id="pay-price" data-page-node-id="Y546QS4cOdDUD2rQSt9Nq9">¥4.99</span>
-            <span class="pay-detail" onclick="toast('价格明细')" data-page-node-id="MdkAIhJXgAcGUBnJoJYf2A">价格明细 <span class="arrow" data-page-node-id="IKLMtlX7ESWZGU5yIIwGHi">›</span></span>
-          </div>
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <span>08:43</span>
+        <div class="status-right">
+            <div class="signal-bars"><i></i><i></i><i></i><i></i></div>
+            <span class="net-tag">5GA</span>
+            <span class="battery-num">66</span>
         </div>
-      </div>
-      <div class="actions" data-page-node-id="3nmz9FhlH5CGzA2ZBx1f9P">
-        <button class="btn" onclick="toast('闲鱼转卖')" data-page-node-id="IjFF6PeHaSOs0af20rZpKd">闲鱼转卖</button>
-        <button class="btn" onclick="toast('申请售后')" data-page-node-id="AhJkJXtTCgbKGTboDLFLsS">申请售后</button>
-        <button class="btn btn-orange" onclick="toast('加入购物车')" data-page-node-id="XxaqIc1GJ10CmO3a9Xwu23">加入购物车</button>
-      </div>
     </div>
-  </div>
 
-  <!-- 价格摘要 -->
-  <div class="card summary" data-page-node-id="WUZ1xi4RKJAvYpuUGziyJy">
-    <div class="sum-row" data-page-node-id="MIbyt3MzxR6mOpgzOvD9qB">
-      <span class="label" data-page-node-id="55kVW9KFsdjxNUcg0IoQmm">实付款</span>
-      <span class="discount" data-page-node-id="QRuP9TDor7vvBD3bSb5PtO">共减<span id="discount-amount" data-page-node-id="VHiHgfE1oesk2sHRCBcjUZ">¥1</span></span>
-      <span class="detail-link" onclick="toast('优惠解析')" data-page-node-id="EG131QwNtLoCB1erbFqoEE"><span class="dlt" data-page-node-id="EG131QwNtLoCB1erbFqoEE2">优惠解析</span> <span class="arrow" data-page-node-id="1zGMBMNxGmgZI6J1GpI29v">›</span></span>
-      <span class="amount" data-page-node-id="dLJ9NhRHKeG0go2Gn5jqZd">
-        <span id="total-amount" data-page-node-id="AuRlQoLO6FhVBEnidKILQ8">¥4.99</span>
-        <span class="chevron" data-page-node-id="lwAj7TZw5eSiV9fTsMz7eb">˅</span>
-      </span>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <div class="icon-btn" onclick="goBack()">
+            <svg width="22" height="22" viewBox="0 0 22 22"><path d="M13.5 4 L7 11 L13.5 18" stroke="#333" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="title">交易成功</div>
+        <div class="dots" onclick="toast('更多')"><i></i><i></i><i></i></div>
     </div>
-    <div class="coupon-row" data-page-node-id="hjyC5AYErOp0js7TyG2o9J">
-      <span class="gift-tag" data-page-node-id="6ZmHMeaG6JpijeMXy08R7t">
-        <svg width="13" height="13" viewBox="0 0 14 14" data-page-node-id="WWV0YINC7UpvZmv3IZ9P5l"><rect x="0.5" y="0.5" width="13" height="13" rx="3.5" fill="#ff5000" data-page-node-id="o0LW1uKGX8919k0Ho3BGfY"/><path d="M4.4 3.2 L7 6.6 L9.6 3.2 M7 6.6 V11 M4.9 7.8 H9.1 M4.9 9.8 H9.1" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="ZvqGODrS5VFnbGCbi6p2MV"/></svg>
-        <span id="gift-tag" data-page-node-id="x0e5MfnmCzWvo2LnQ9TLo9">首单礼金抵¥1</span>
-      </span>
-    </div>
-  </div>
 
-  <!-- 订单信息 -->
-  <div class="card order" data-page-node-id="veQdl1YOoivAWi3HboZG9U">
-    <div class="head" data-page-node-id="Cno11eyypXHTUhFpibnmtS">
-      <span class="label" data-page-node-id="A16BaGrAbePqQSv69oizt1">订单信息</span>
-      <span class="count" data-page-node-id="yvbbiTYOVrHugo5pj0y14k">共7项</span>
-      <span class="chevron" data-page-node-id="tF6K4wQ40GKWq3GmC44Nm3">˄</span>
-      <span class="oid" id="order-id" data-page-node-id="Bkr1lEYDwyKlKAUGg6I0m3">5127217527457057230</span>
-      <span class="copy" onclick="copyOrderId()" data-page-node-id="PYtWFWG2ex37IKlraTZPqw">复制</span>
+    <!-- 物流栏 -->
+    <div class="card logistics" onclick="toast('查看物流')">
+        <svg class="pkg-icon" width="22" height="22" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="#ff4400" stroke-width="2.2"/>
+            <path d="M8 3 V7 Q8 8 9 8 H15 Q16 8 16 7 V3" fill="none" stroke="#ff4400" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M12 11 V15 M10 13 L12 15 L14 13" fill="none" stroke="#ff4400" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="status" id="logi-status">已签收</span>
+        <span class="divider">|</span>
+        <div class="addr">
+            <span class="user">
+                <span class="text" id="logi-addr"><b>困 86-189****0880</b> <span class="sub-addr">送至 里水大道...</span></span>
+            </span>
+        </div>
+        <span class="arrow">
+            <svg width="14" height="14" viewBox="0 0 14 14"><path d="M5 3 L9.5 7 L5 11" stroke="#bbb" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
     </div>
-    <div class="row" data-page-node-id="SyhrdNHe9LuSz5PsQNa4Bm">
-      <span class="k" data-page-node-id="7XhVEnCOEeIQGA7NBCMBkh">支付方式</span>
-      <span class="v dim" id="pay-method" data-page-node-id="POqBbP2CMW9FnniYdPwpf5">支付宝支付</span>
-    </div>
-    <div class="row" data-page-node-id="qlWf5rPlgTkayuuMQoWatw">
-      <span class="k" data-page-node-id="T31AfWcFRWIIEzxZGBq5pa">收货信息 <span class="emo" data-page-node-id="aHjEbcG3y0uWQhqPMhWBHo"><svg width="17" height="11" viewBox="0 0 17 11"><path d="M1.5 2 Q8.5 8.5 15.5 2" fill="none" stroke="#4d5b6b" stroke-width="1.6" stroke-linecap="round"/><path d="M4.5 5.6 L3.6 7.8 M8.5 6.8 L8.5 9.2 M12.5 5.6 L13.4 7.8" stroke="#4d5b6b" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></span></span>
-      <span class="v" id="recv-info" data-page-node-id="RmDcUpzlXkxxYveHTBmbgR">困，86-189****0880，广东省 佛山市 南海区 里水镇 ********************</span>
-    </div>
-    <div class="row" data-page-node-id="Sd52musKO6FteVCRtKGBwk">
-      <span class="k" data-page-node-id="ZEyofJElDj80AOXh9KDX18">支付宝交易号</span>
-      <span class="v" id="trade-no" data-page-node-id="q3uxmFmPLhQKB6nE8dxbpK">2026090123001180001446401077</span>
-    </div>
-    <div class="row" data-page-node-id="QEINVySavMWkaj4QVWXZ1y">
-      <span class="k" data-page-node-id="Jv8LtQ9ODd7N0G96jFhkVP">创建时间</span>
-      <span class="v" id="create-time" data-page-node-id="BOHeHfQJU81EEXAr8E2vwg">2026-09-01 16:39:46</span>
-    </div>
-    <div class="row" data-page-node-id="xNG89S7iMoLiCH1XDYXoVF">
-      <span class="k" data-page-node-id="0G9OLuhRrMnYlinDZoh443">付款时间</span>
-      <span class="v" id="pay-time" data-page-node-id="OAOFOm8vTj9lsAQbdrEnlW">2026-09-01 16:39:48</span>
-    </div>
-    <div class="row" data-page-node-id="7RhzL0t5nyNZQbxKJXQScB">
-      <span class="k" data-page-node-id="3Jhd5m2v2bL36TNS0q29jM">发货时间</span>
-      <span class="v" id="ship-time" data-page-node-id="t88BEu42MsSQknNDkZbhOo">2026-09-01 17:55:52</span>
-    </div>
-  </div>
 
-  <!-- 底部操作栏 -->
-  <div class="bottom-bar" data-page-node-id="HAnCI1tDqZ7mouNDdYSVhn">
-    <div class="bb-icon" onclick="toast('联系客服')" data-page-node-id="Y6Vz5KvCMJkZPiHQV9w1I7">
-      <svg width="23" height="23" viewBox="0 0 24 24" data-page-node-id="yanytOe6WUFvSQ8XVrdCq7"><circle cx="12" cy="12" r="9.4" fill="none" stroke="#ff5000" stroke-width="2.3" data-page-node-id="fKKb5mscvsrKylEd0v2rVG"/><path d="M8.7 7.6 V10.4 M15.3 7.6 V10.4" stroke="#ff5000" stroke-width="2.2" stroke-linecap="round" fill="none" data-page-node-id="ZOFHz7yIdZZhOZAvKaPOHE"/><path d="M8 13.6 Q12 17.4 16 13.6" fill="none" stroke="#ff5000" stroke-width="2.1" stroke-linecap="round" data-page-node-id="6U2ZgoaRYGXZRAWQxwwzg1"/></svg>
-      客服
+    <!-- 店铺 + 商品 -->
+    <div class="card">
+        <div class="shop">
+            <img class="avatar" id="shop-avatar" src="img/avatar.jpg" alt="店铺头像">
+            <div class="info">
+                <div class="name" id="shop-name">万千少女梦</div>
+                <div class="desc" id="shop-desc">88VIP好评率93%，客服平均22秒回复</div>
+            </div>
+            <div class="enter" onclick="toast('进店逛逛')">
+                进店逛逛
+                <svg width="12" height="12" viewBox="0 0 12 12"><path d="M4.5 2.5 L8 6 L4.5 9.5" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-main">
+                <img class="pic" id="product-image" src="img/product.jpg" alt="商品图" onclick="openLightbox(this.src)">
+                <div class="detail">
+                    <div class="row1">
+                        <div class="title" id="product-title">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
+                        <div class="side">
+                            <span class="fold" onclick="toast('收起')">
+                                <svg width="14" height="8" viewBox="0 0 14 8"><path d="M2 6.5 L7 1.5 L12 6.5" stroke="#999" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </span>
+                            <span class="orig-price" id="orig-price">¥5.99</span>
+                        </div>
+                    </div>
+                    <div class="row2">
+                        <span class="spec" id="product-spec">蓝咖撞色波点BB夹【四件套】</span>
+                        <span class="qty">x<span id="product-qty">1</span></span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag tag-fast">极速退款</span>
+                        <span class="tag tag-return">
+                            7天无理由退货
+                            <span class="arrow">
+                                <svg width="10" height="10" viewBox="0 0 10 10"><path d="M3.5 2 L7 5 L3.5 8" stroke="#bbb" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="pay-row">
+                        <span class="pay-label">实付价</span>
+                        <span class="pay-price" id="pay-price">¥4.99</span>
+                        <span class="pay-detail" onclick="toast('价格明细')">
+                            价格明细
+                            <span class="arrow">
+                                <svg width="11" height="11" viewBox="0 0 11 11"><path d="M4 2.5 L7.5 5.5 L4 8.5" stroke="#ff4400" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn" onclick="toast('闲鱼转卖')">闲鱼转卖</button>
+                <button class="btn" onclick="toast('申请售后')">申请售后</button>
+                <button class="btn btn-orange" onclick="toast('加入购物车')">加入购物车</button>
+            </div>
+        </div>
     </div>
-    <div class="bb-icon" onclick="goEdit()" data-page-node-id="VLEzlGEHZqJEcLf2GfbFpC">
-      <svg width="23" height="23" viewBox="0 0 24 24" data-page-node-id="T4ymkI1Z0lcCFN5hMNOLcG"><circle cx="12" cy="12" r="9.4" fill="none" stroke="#15161c" stroke-width="2.3" data-page-node-id="kCgo62La0pt2iaRRfD0gEb"/><circle cx="7.6" cy="12" r="1.5" fill="#15161c" data-page-node-id="uDC9HQr7NoaOkicxgW88nA"/><circle cx="12" cy="12" r="1.5" fill="#15161c" data-page-node-id="Ude8OrwFcmkrzwFnOkRIDR"/><circle cx="16.4" cy="12" r="1.5" fill="#15161c" data-page-node-id="6CTGZPgb9PEqDcOE3RoFFU"/></svg>
-      更多
+
+    <!-- 价格摘要 -->
+    <div class="card summary">
+        <div class="sum-row">
+            <span class="label">实付款</span>
+            <span class="discount">共减<span id="discount-amount">¥1</span></span>
+            <span class="detail-link" onclick="toast('优惠解析')">
+                <span class="dlt">优惠解析</span>
+                <span class="arrow">
+                    <svg width="11" height="11" viewBox="0 0 11 11"><path d="M4 2.5 L7.5 5.5 L4 8.5" stroke="#ff2d78" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+            </span>
+            <span class="amount">
+                <span id="total-amount">¥4.99</span>
+                <span class="chevron">
+                    <svg width="12" height="8" viewBox="0 0 12 8"><path d="M2 2 L6 6 L10 2" stroke="#666" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+            </span>
+        </div>
+        <div class="coupon-row">
+            <span class="gift-tag">
+                <svg width="13" height="13" viewBox="0 0 14 14"><rect x="0.5" y="0.5" width="13" height="13" rx="3.5" fill="#ff4400"/><path d="M4.4 3.2 L7 6.6 L9.6 3.2 M7 6.6 V11 M4.9 7.8 H9.1 M4.9 9.8 H9.1" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="gift-tag">首单礼金抵¥1</span>
+            </span>
+        </div>
     </div>
-    <button class="bb-btn" onclick="toast('评价')" data-page-node-id="4MQVbPfTEgBmgpbqBPgEYD">评价</button>
-    <button class="bb-btn" onclick="toast('加入购物车')" data-page-node-id="E4JUCaXJLGiVXbPDrRFmNR">加入购物车</button>
-    <button class="bb-btn-primary" onclick="toast('再买一单')" data-page-node-id="1aJOo8rJuTEgA9rnLxA4ML">再买一单</button>
-  </div>
 
-  <!-- 返回配置页 -->
-  <button class="edit-fab" onclick="goEdit()" data-page-node-id="Z7xPfZuosS2i9vuT07m6bh">✎ 编辑数据</button>
+    <!-- 订单信息 -->
+    <div class="card order">
+        <div class="head">
+            <span class="label">订单信息</span>
+            <span class="count">共7项</span>
+            <span class="chevron">
+                <svg width="10" height="7" viewBox="0 0 10 7"><path d="M1.5 5.5 L5 2 L8.5 5.5" stroke="#999" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="oid" id="order-id">5127217527457057230</span>
+            <span class="copy" onclick="copyOrderId()">复制</span>
+        </div>
+        <div class="row">
+            <span class="k">支付方式</span>
+            <span class="v dim" id="pay-method">支付宝支付</span>
+        </div>
+        <div class="row">
+            <span class="k">收货信息 <span class="emo"><svg width="17" height="11" viewBox="0 0 17 11"><path d="M1.5 2 Q8.5 8.5 15.5 2" fill="none" stroke="#4d5b6b" stroke-width="1.6" stroke-linecap="round"/><path d="M4.5 5.6 L3.6 7.8 M8.5 6.8 L8.5 9.2 M12.5 5.6 L13.4 7.8" stroke="#4d5b6b" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg></span></span>
+            <span class="v" id="recv-info">困，86-189****0880，广东省 佛山市 南海区 里水镇 ********************</span>
+        </div>
+        <div class="row">
+            <span class="k">支付宝交易号</span>
+            <span class="v" id="trade-no">2026090123001180001446401077</span>
+        </div>
+        <div class="row">
+            <span class="k">创建时间</span>
+            <span class="v" id="create-time">2026-09-01 16:39:46</span>
+        </div>
+        <div class="row">
+            <span class="k">付款时间</span>
+            <span class="v" id="pay-time">2026-09-01 16:39:48</span>
+        </div>
+        <div class="row">
+            <span class="k">发货时间</span>
+            <span class="v" id="ship-time">2026-09-01 17:55:52</span>
+        </div>
+    </div>
 
-  <!-- 商品图大图预览 -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()" data-page-node-id="bBU0TKQ11HUYFg624um9pP">
-    <img id="lightbox-img" src="" alt="商品大图" data-page-node-id="6YeDWotoA0ZvwdGeyp4jAk">
-  </div>
+    <!-- 底部操作栏 -->
+    <div class="bottom-bar">
+        <div class="bb-icon" onclick="toast('联系客服')">
+            <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.4" fill="none" stroke="#ff4400" stroke-width="2.3"/><path d="M8.7 7.6 V10.4 M15.3 7.6 V10.4" stroke="#ff4400" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M8 13.6 Q12 17.4 16 13.6" fill="none" stroke="#ff4400" stroke-width="2.1" stroke-linecap="round"/></svg>
+            客服
+        </div>
+        <div class="bb-icon" onclick="goEdit()">
+            <svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.4" fill="none" stroke="#15161c" stroke-width="2.3"/><circle cx="7.6" cy="12" r="1.5" fill="#15161c"/><circle cx="12" cy="12" r="1.5" fill="#15161c"/><circle cx="16.4" cy="12" r="1.5" fill="#15161c"/></svg>
+            更多
+        </div>
+        <button class="bb-btn" onclick="toast('评价')">评价</button>
+        <button class="bb-btn" onclick="toast('加入购物车')">加入购物车</button>
+        <button class="bb-btn-primary" onclick="toast('再买一单')">再买一单</button>
+    </div>
 
-  <div class="toast" id="toast" data-page-node-id="VpRew5I4yE35ehDrjRk2Rd"></div>
+    <!-- 返回配置页（滑动时显示，停止 2 秒后隐藏） -->
+    <button class="edit-fab" onclick="goEdit()">✎ 编辑数据</button>
+
+    <!-- 商品图大图预览 -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="商品大图">
+    </div>
+
+    <div class="toast" id="toast"></div>
 </div>
 
 <script>
@@ -452,16 +484,13 @@ function getConfig() {
     const v = qs.get(key);
     if (v !== null && v !== '') cfg[key] = v;
   }
-  // 兼容别名
   const alias = { img: 'imageUrl', image: 'imageUrl', orig: 'origPrice', headimg: 'avatar', shopimg: 'avatar' };
   for (const [k, field] of Object.entries(alias)) {
     const v = qs.get(k);
     if (v) cfg[field] = v;
   }
-  // 「送至」片段：配了 address 参数则自动截取，否则用默认
   cfg._logi = qs.get('logi') || (qs.has('address') ? shortAddress(cfg.address) : DEFAULTS.logi);
 
-  // 优惠金额：未指定时按 原价-实付价 自动计算
   const d = qs.get('discount');
   if (d) {
     cfg._discount = d;
@@ -476,7 +505,6 @@ function getConfig() {
 function money(v) { return '¥' + v; }
 function trimMoney(v) { const n = parseFloat(v); return isNaN(n) ? v : String(Math.round(n * 100) / 100); }
 
-/* 「送至 XX...」片段：最后一个行政关键字之后的街道部分（去掉尾部打码星号） */
 function cut(s) { s = s.trim(); return s.length > 6 ? s.slice(0, 6) + '...' : s; }
 function shortAddress(addr) {
   const s = String(addr).split(/[，,]/).map(x => x.trim()).filter(Boolean).pop() || String(addr);
@@ -500,9 +528,12 @@ function render(cfg) {
   document.getElementById('discount-amount').textContent = money(trimMoney(cfg._discount));
   document.getElementById('gift-tag').textContent = '首单礼金抵¥' + trimMoney(cfg._discount);
   document.getElementById('logi-status').textContent = cfg.status;
+  
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  
   document.getElementById('logi-addr').innerHTML =
-    '<b>' + esc(cfg.name + ' ' + cfg.phone) + '</b> 送至 ' + esc(cfg._logi);
+    '<b>' + esc(cfg.name + ' ' + cfg.phone) + '</b> <span class="sub-addr">送至 ' + esc(cfg._logi) + '</span>';
+    
   document.getElementById('recv-info').textContent =
     cfg.name + '，' + cfg.phone + '，' + cfg.address;
   document.getElementById('order-id').textContent = cfg.orderId;
@@ -551,6 +582,25 @@ function toast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 1500);
 }
+
+/* ================= 编辑按钮：滑动时显示，停止 2 秒后隐藏 ================= */
+(function initEditFab() {
+  const fab = document.querySelector('.edit-fab');
+  if (!fab) return;
+  let hideTimer;
+
+  function showFab() {
+    fab.classList.add('show');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
+      fab.classList.remove('show');
+    }, 2000);
+  }
+
+  window.addEventListener('scroll', showFab, { passive: true });
+  window.addEventListener('touchmove', showFab, { passive: true });
+  window.addEventListener('wheel', showFab, { passive: true });
+})();
 
 render(getConfig());
 </script>
