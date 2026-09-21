@@ -494,6 +494,15 @@ function getConfig() {
     const v = qs.get(key);
     if (v !== null && v !== '') cfg[key] = v;
   }
+  /* big=1：本地上传的 base64 图片过大未走 URL，由配置页存入 sessionStorage，同浏览器同标签页回读 */
+  if (qs.get('big') === '1') {
+    try {
+      const big = JSON.parse(sessionStorage.getItem('ob-big') || '{}');
+      for (const [k, v] of Object.entries(big)) {
+        if (k in DEFAULTS && (qs.get(k) === null || qs.get(k) === '') && v) cfg[k] = v;
+      }
+    } catch (e) { /* 忽略，回退默认图 */ }
+  }
   const alias = { img: 'imageUrl', image: 'imageUrl', orig: 'origPrice', headimg: 'avatar', shopimg: 'avatar' };
   for (const [k, field] of Object.entries(alias)) {
     const v = qs.get(k);

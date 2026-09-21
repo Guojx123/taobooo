@@ -386,12 +386,31 @@ function buildQuery(data) {
   return qs.toString();
 }
 
+/* base64 图片过长（几十 KB），拼进 URL 会超出服务器 URI 上限报 400。
+   改为存 sessionStorage 同标签页传递，URL 里只放 big=1 标记。 */
+const BIG_KEY = 'ob-big';
+function buildQuerySplit(data) {
+  const qs = new URLSearchParams();
+  const big = {};
+  let hasBig = false;
+  for (const [k, v] of Object.entries(data)) {
+    if (!v || String(v) === String(DEFAULTS[k] ?? '')) continue;
+    if (/^data:image\//.test(String(v))) { big[k] = v; hasBig = true; }
+    else qs.set(k, v);
+  }
+  if (hasBig) {
+    try { sessionStorage.setItem(BIG_KEY, JSON.stringify(big)); qs.set('big', '1'); }
+    catch (e) { /* 存储失败则放弃图片参数，保证页面能打开 */ }
+  }
+  return qs.toString();
+}
+
 /* ================= 实时预览 ================= */
 let previewTimer;
 function updatePreview() {
   clearTimeout(previewTimer);
   previewTimer = setTimeout(() => {
-    const q = buildQuery(collect());
+    const q = buildQuerySplit(collect());
     const src = 'order.html' + (q ? '?' + q : '');
     $('preview').src = src;
     $('preview-m').src = src;
@@ -494,15 +513,15 @@ function useDefaultAvatar() {
 
 /* ================= 操作 ================= */
 function generate() {
-  const q = buildQuery(collect());
+  const q = buildQuerySplit(collect());
   location.href = 'order.html' + (q ? '?' + q : '');
 }
 
 function copyLink() {
-  const q = buildQuery(collect());
+  const q = buildQuerySplit(collect());
   const url = location.origin + location.pathname.replace(/[^/]*$/, '') + 'order.html' + (q ? '?' + q : '');
-  const long = url.length > 8000;
-  const done = () => toast(long ? '链接已复制（较长，因图片为本地内嵌）' : '链接已复制');
+  const withBig = q.includes('big=1');
+  const done = () => toast(withBig ? '链接已复制（本地图片未含在链接中，本浏览器打开仍可见，其他设备显示默认图）' : '链接已复制');
   if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, () => toast('复制失败'));
   else toast('复制失败');
 }
