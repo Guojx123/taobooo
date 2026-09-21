@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>订单详情 - 交易成功</title>
+<style>
+  :root {
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --text-main: #333333;
+    --text-sub: #999999;
+    --orange: #ff5000;
+    --orange-light: #ff7700;
+    --red: #ff0036;
+    --border: #eeeeee;
+    --radius: 0px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #e8e8e8;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+  }
+  /* ============ 手机容器 ============ */
+  .phone {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    padding-bottom: 90px;
+  }
+  @media (min-width: 500px) {
+    body { padding: 0; }
+    .phone { box-shadow: 0 0 30px rgba(0,0,0,.15); }
+  }
+
+  /* ============ 状态栏 ============ */
+  .status-bar {
+    height: 44px;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .status-right { display: flex; align-items: center; gap: 5px; }
+  .signal-bars { display: flex; align-items: flex-end; gap: 1.5px; height: 11px; }
+  .signal-bars i { display: block; width: 3px; background: #333; border-radius: 1px; }
+  .signal-bars i:nth-child(1){height:4px}.signal-bars i:nth-child(2){height:6px}
+  .signal-bars i:nth-child(3){height:8px}.signal-bars i:nth-child(4){height:11px}
+  .net-tag { font-size: 10px; font-weight: 700; letter-spacing: .2px; }
+  .battery {
+    width: 24px; height: 12px; border: 1.5px solid #333; border-radius: 3.5px;
+    display: flex; align-items: center; padding: 1.5px; position: relative;
+  }
+  .battery::after {
+    content: ""; position: absolute; right: -4px; top: 3px;
+    width: 2px; height: 5px; background: #333; border-radius: 0 2px 2px 0;
+  }
+  .battery-level { height: 100%; background: #333; border-radius: 1.5px; width: 66%; }
+  .battery-num { font-size: 10px; font-weight: 700; background:#333; color:#fff; border-radius: 3px; padding: 0 3px; height: 15px; display:flex; align-items:center; }
+
+  /* ============ 导航栏 ============ */
+  .nav {
+    height: 48px;
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav .icon-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .nav .title { font-size: 18px; font-weight: 700; position: absolute; left: 50%; transform: translateX(-50%); }
+  .nav .dots { font-size: 22px; font-weight: 700; letter-spacing: 2px; color: #333; cursor: pointer; line-height: 1; }
+
+  /* ============ 卡片通用 ============ */
+  .card {
+    background: var(--card);
+    margin-top: 10px;
+    padding: 14px 16px;
+  }
+
+  /* ============ 物流栏 ============ */
+  .logistics { display: flex; align-items: center; gap: 8px; padding: 12px 16px; cursor: pointer; }
+  .logistics .pkg-icon { flex-shrink: 0; }
+  .logistics .status { font-size: 15px; font-weight: 700; color: #333; }
+  .logistics .divider { color: #ddd; margin: 0 2px; }
+  .logistics .addr { font-size: 13px; color: #666; display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .logistics .addr .user { display: inline-flex; align-items: center; gap: 3px; }
+  .logistics .addr .text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+  .logistics .arrow { color: #bbb; font-size: 14px; flex-shrink: 0; }
+
+  /* ============ 店铺信息 ============ */
+  .shop { display: flex; align-items: center; gap: 10px; padding: 14px 16px; }
+  .shop .avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #6db3f2, #1e69c8);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px;
+  }
+  .shop .info { flex: 1; min-width: 0; }
+  .shop .name { font-size: 16px; font-weight: 700; }
+  .shop .desc { font-size: 12px; color: var(--text-sub); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .shop .enter { font-size: 13px; color: #666; display: flex; align-items: center; gap: 2px; flex-shrink: 0; cursor: pointer; }
+
+  /* ============ 商品卡片 ============ */
+  .product { padding: 16px; }
+  .product-main { display: flex; gap: 10px; }
+  .product .pic {
+    width: 92px; height: 92px; border-radius: 8px; flex-shrink: 0;
+    object-fit: cover; background: #dceefb; cursor: pointer;
+  }
+  .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .product .row1 { display: flex; gap: 8px; }
+  .product .title {
+    font-size: 14px; line-height: 1.4; flex: 1;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .product .orig-price { font-size: 14px; color: var(--orange); font-weight: 500; flex-shrink: 0; }
+  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+  .product .spec { font-size: 12px; color: #666; background: #f5f5f5; padding: 1px 5px; border-radius: 3px; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .product .qty { font-size: 13px; color: #999; flex-shrink: 0; }
+  .product .tags { display: flex; gap: 6px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
+  .tag { font-size: 11px; padding: 1px 5px; border-radius: 3px; }
+  .tag-fast { color: #00b578; background: rgba(0,181,120,.08); display: inline-flex; align-items: center; gap: 2px; }
+  .tag-return { color: #666; background: #f5f5f5; display: inline-flex; align-items: center; gap: 1px; }
+  .product .pay-row { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
+  .product .pay-label { font-size: 13px; color: #666; }
+  .product .pay-price { font-size: 18px; color: var(--orange); font-weight: 700; }
+  .product .pay-detail { font-size: 12px; color: #999; display: inline-flex; align-items: center; gap: 1px; cursor: pointer; }
+  .product .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+  .btn {
+    font-size: 13px; padding: 7px 14px; border-radius: 18px;
+    border: 1px solid #ddd; background: #fff; color: #333;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn:active { opacity: .8; }
+  .btn-orange { color: var(--orange); border-color: var(--orange); background: #fff7f2; }
+
+  /* ============ 价格摘要 ============ */
+  .summary .sum-row { display: flex; align-items: center; }
+  .summary .label { font-size: 15px; font-weight: 700; }
+  .summary .discount { font-size: 13px; color: var(--red); font-weight: 600; margin-left: 10px; }
+  .summary .coupon-tag {
+    font-size: 11px; color: var(--red); border: 1px solid rgba(255,0,54,.4);
+    border-radius: 3px; padding: 0 4px; margin-left: 6px; display: inline-flex; align-items: center; gap: 2px;
+  }
+  .summary .coupon-tag::before { content: "¥"; font-size: 9px; border: 1px solid var(--red); border-radius: 50%; width: 11px; height: 11px; display: inline-flex; align-items: center; justify-content: center; }
+  .summary .detail-link { font-size: 12px; color: #999; display: inline-flex; align-items: center; gap: 1px; margin-left: 8px; }
+  .summary .amount { margin-left: auto; font-size: 18px; color: #333; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .summary .amount .rmb { font-size: 13px; }
+  .summary .amount .chevron { font-size: 12px; color: #999; }
+  .summary .coupon-row { margin-top: 8px; display: flex; }
+  .summary .gift-tag {
+    font-size: 11px; color: var(--orange); background: #fff3ec;
+    border-radius: 3px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 3px;
+  }
+
+  /* ============ 订单信息 ============ */
+  .order .head { display: flex; align-items: center; padding-bottom: 10px; }
+  .order .head .label { font-size: 15px; font-weight: 700; }
+  .order .head .count { font-size: 12px; color: #999; margin-left: 4px; }
+  .order .head .chevron { font-size: 11px; color: #999; margin-left: 2px; }
+  .order .head .oid { margin-left: auto; font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+  .order .copy { font-size: 13px; color: #666; margin-left: 8px; flex-shrink: 0; cursor: pointer; }
+  .order .row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 9px 0; font-size: 14px;
+  }
+  .order .row .k { color: #333; flex-shrink: 0; }
+  .order .row .v { color: #666; text-align: right; margin-left: 20px; word-break: break-all; }
+  .order .row .v.dim { color: #999; }
+
+  /* ============ 底部操作栏 ============ */
+  .bottom-bar {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 420px;
+    background: var(--card);
+    display: flex; align-items: center;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+    gap: 8px; z-index: 20;
+    box-shadow: 0 -1px 4px rgba(0,0,0,.04);
+  }
+  .bb-icon { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: #666; cursor: pointer; flex-shrink: 0; width: 40px; }
+  .bb-btn {
+    flex: 1; height: 38px; border-radius: 19px; border: 1px solid #ddd;
+    background: #fff; color: #333; font-size: 14px; cursor: pointer; font-family: inherit;
+  }
+  .bb-btn:active { opacity: .8; }
+  .bb-btn-primary {
+    flex: 1.2; border: none; color: #fff; font-weight: 600;
+    background: linear-gradient(90deg, #ff7000, #ff4400);
+  }
+
+  /* ============ 配置面板 ============ */
+  .config-fab {
+    position: fixed; right: max(16px, calc(50% - 210px + 16px)); bottom: 110px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #333; color: #fff; border: none; font-size: 20px;
+    cursor: pointer; z-index: 30; box-shadow: 0 4px 12px rgba(0,0,0,.25);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .config-mask {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 40;
+    display: none;
+  }
+  .config-mask.show { display: block; }
+  .config-panel {
+    position: fixed; bottom: 0; left: 50%; transform: translate(-50%, 105%);
+    width: 100%; max-width: 420px; max-height: 82vh; overflow-y: auto;
+    background: #fff; border-radius: 16px 16px 0 0; z-index: 50;
+    padding: 20px 18px calc(24px + env(safe-area-inset-bottom));
+    transition: transform .28s ease;
+  }
+  .config-panel.show { transform: translate(-50%, 0); }
+  .config-panel h3 { font-size: 17px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+  .config-panel h3 .close { font-size: 22px; color: #999; cursor: pointer; font-weight: 400; }
+  .cfg-group { margin-bottom: 12px; }
+  .cfg-group label { display: block; font-size: 12px; color: #999; margin-bottom: 5px; }
+  .cfg-group input, .cfg-group textarea {
+    width: 100%; border: 1px solid #e5e5e5; border-radius: 8px;
+    padding: 9px 10px; font-size: 14px; font-family: inherit; outline: none; background: #fafafa;
+  }
+  .cfg-group input:focus, .cfg-group textarea:focus { border-color: var(--orange); background: #fff; }
+  .cfg-group textarea { resize: vertical; min-height: 54px; }
+  .cfg-row { display: flex; gap: 10px; }
+  .cfg-row .cfg-group { flex: 1; }
+  .cfg-img-row { display: flex; gap: 10px; align-items: center; }
+  .cfg-img-preview { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; background: #f0f0f0; border: 1px solid #eee; }
+  .cfg-file-btn { font-size: 12px; color: var(--orange); cursor: pointer; text-decoration: underline; }
+  .cfg-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .cfg-actions button {
+    flex: 1; height: 42px; border-radius: 21px; font-size: 15px; cursor: pointer; font-family: inherit;
+  }
+  .cfg-reset { background: #f5f5f5; border: none; color: #666; }
+  .cfg-save { background: linear-gradient(90deg, #ff7000, #ff4400); border: none; color: #fff; font-weight: 600; }
+  .cfg-tip { font-size: 11px; color: #bbb; margin-top: 10px; line-height: 1.6; }
+
+  /* toast */
+  .toast {
+    position: fixed; top: 45%; left: 50%; transform: translate(-50%,-50%);
+    background: rgba(0,0,0,.75); color: #fff; font-size: 14px;
+    padding: 10px 20px; border-radius: 8px; z-index: 99;
+    opacity: 0; pointer-events: none; transition: opacity .25s;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- 状态栏 -->
+  <div class="status-bar">
+    <span>08:43</span>
+    <div class="status-right">
+      <div class="signal-bars"><i></i><i></i><i></i><i></i></div>
+      <span class="net-tag">5GA</span>
+      <div class="battery"><div class="battery-level"></div></div>
+      <span class="battery-num">66</span>
+    </div>
+  </div>
+
+  <!-- 导航栏 -->
+  <div class="nav">
+    <div class="icon-btn" onclick="toast('返回')">
+      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M13 3 L6 10 L13 17" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="title">交易成功</div>
+    <div class="dots" onclick="toast('更多')">•••</div>
+  </div>
+
+  <!-- 物流栏 -->
+  <div class="card logistics" onclick="toast('查看物流')">
+    <svg class="pkg-icon" width="22" height="22" viewBox="0 0 22 22">
+      <rect x="2" y="5" width="18" height="14" rx="2" fill="none" stroke="#ff5000" stroke-width="1.8"/>
+      <path d="M2 9 H20 M11 5 V9" stroke="#ff5000" stroke-width="1.8"/>
+      <path d="M7 2 L11 5 L15 2" fill="none" stroke="#ff5000" stroke-width="1.8" stroke-linejoin="round"/>
+    </svg>
+    <span class="status" id="logi-status">已签收</span>
+    <span class="divider">|</span>
+    <div class="addr">
+      <span class="user">
+        <svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="3" fill="none" stroke="#999" stroke-width="1.3"/><path d="M1.5 13 C1.5 9.8 4 8.5 7 8.5 C10 8.5 12.5 9.8 12.5 13" fill="none" stroke="#999" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="text" id="logi-addr">困 86-189****0880 送至 里水大道...</span>
+      </span>
+    </div>
+    <span class="arrow">›</span>
+  </div>
+
+  <!-- 店铺信息 -->
+  <div class="card shop">
+    <img class="avatar" id="shop-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Crect width='42' height='42' fill='%236db3f2'/%3E%3Ccircle cx='21' cy='16' r='7' fill='%23fff' opacity='.85'/%3E%3Cpath d='M8 38 C8 28 14 26 21 26 C28 26 34 28 34 38 Z' fill='%23fff' opacity='.85'/%3E%3C/svg%3E" alt="店铺头像">
+    <div class="info">
+      <div class="name" id="shop-name">万千少女梦</div>
+      <div class="desc" id="shop-desc">88VIP好评率93%，客服平均22秒回复</div>
+    </div>
+    <div class="enter" onclick="toast('进店逛逛')">进店逛逛 <span>›</span></div>
+  </div>
+
+  <!-- 商品卡片 -->
+  <div class="card product">
+    <div class="product-main">
+      <img class="pic" id="product-image" src="img/product.jpg" alt="商品图" onclick="toast('商品图片')">
+      <div class="detail">
+        <div class="row1">
+          <div class="title" id="product-title">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
+          <div class="orig-price" id="orig-price">¥5.99</div>
+        </div>
+        <div class="row2">
+          <span class="spec" id="product-spec">蓝咖撞色波点BB夹【四件套】</span>
+          <span class="qty">x<span id="product-qty">1</span></span>
+        </div>
+        <div class="tags">
+          <span class="tag tag-fast">
+            <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 0 L6.2 3.4 L9.8 3.6 L7 5.8 L8 9.4 L5 7.3 L2 9.4 L3 5.8 L0.2 3.6 L3.8 3.4 Z" fill="#00b578"/></svg>
+            极速退款
+          </span>
+          <span class="tag tag-return">7天无理由退货 <span style="font-size:9px">›</span></span>
+        </div>
+        <div class="pay-row">
+          <span class="pay-label">实付价</span>
+          <span class="pay-price" id="pay-price">¥4.99</span>
+          <span class="pay-detail" onclick="toast('价格明细')">价格明细 <span>›</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="toast('闲鱼转卖')">闲鱼转卖</button>
+      <button class="btn" onclick="toast('申请售后')">申请售后</button>
+      <button class="btn btn-orange" onclick="toast('加入购物车')">加入购物车</button>
+    </div>
+  </div>
+
+  <!-- 价格摘要 -->
+  <div class="card summary">
+    <div class="sum-row">
+      <span class="label">实付款</span>
+      <span class="discount">共减<span id="discount-amount">¥1</span></span>
+      <span class="detail-link" onclick="toast('优惠解析')">优惠解析 <span>›</span></span>
+      <span class="amount">
+        <span class="rmb">¥</span><span id="total-amount">4.99</span>
+        <span class="chevron">˅</span>
+      </span>
+    </div>
+    <div class="coupon-row">
+      <span class="gift-tag" id="gift-tag">首单礼金抵¥1</span>
+    </div>
+  </div>
+
+  <!-- 订单信息 -->
+  <div class="card order">
+    <div class="head">
+      <span class="label">订单信息</span>
+      <span class="count">共7项</span>
+      <span class="chevron">^</span>
+      <span class="oid" id="order-id">5127217527457057230</span>
+      <span class="copy" onclick="copyOrderId()">复制</span>
+    </div>
+    <div class="row">
+      <span class="k">支付方式</span>
+      <span class="v dim" id="pay-method">支付宝支付</span>
+    </div>
+    <div class="row">
+      <span class="k">收货信息 <span style="font-size:12px">☕</span></span>
+      <span class="v" id="recv-info">困，86-189****0880，广东省 佛山市 南海区 里水镇 ******************</span>
+    </div>
+    <div class="row">
+      <span class="k">支付宝交易号</span>
+      <span class="v" id="trade-no">2026090123001180001446401077</span>
+    </div>
+    <div class="row">
+      <span class="k">创建时间</span>
+      <span class="v" id="create-time">2026-09-01 16:39:46</span>
+    </div>
+    <div class="row">
+      <span class="k">付款时间</span>
+      <span class="v" id="pay-time">2026-09-01 16:39:48</span>
+    </div>
+    <div class="row">
+      <span class="k">发货时间</span>
+      <span class="v" id="ship-time">2026-09-01 17:55:52</span>
+    </div>
+  </div>
+
+  <!-- 底部操作栏 -->
+  <div class="bottom-bar">
+    <div class="bb-icon" onclick="toast('联系客服')">
+      <svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 11 a8 8 0 0 1 16 0 v4 a3 3 0 0 1 -3 3 h-2" fill="none" stroke="#333" stroke-width="1.6" stroke-linecap="round"/><rect x="2" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6"/><rect x="16" y="10" width="4" height="6" rx="2" fill="none" stroke="#333" stroke-width="1.6"/></svg>
+      客服
+    </div>
+    <div class="bb-icon" onclick="openConfig()">
+      <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="6" cy="11" r="1.6" fill="#333"/><circle cx="11" cy="11" r="1.6" fill="#333"/><circle cx="16" cy="11" r="1.6" fill="#333"/></svg>
+      更多
+    </div>
+    <button class="bb-btn" onclick="toast('评价')">评价</button>
+    <button class="bb-btn" onclick="toast('加入购物车')">加入购物车</button>
+    <button class="bb-btn-primary" onclick="toast('再买一单')">再买一单</button>
+  </div>
+
+  <!-- 配置面板入口 -->
+  <button class="config-fab" onclick="openConfig()" title="配置页面数据">⚙</button>
+
+  <!-- 配置面板 -->
+  <div class="config-mask" id="config-mask" onclick="closeConfig()"></div>
+  <div class="config-panel" id="config-panel">
+    <h3>页面数据配置 <span class="close" onclick="closeConfig()">×</span></h3>
+
+    <div class="cfg-group">
+      <label>商品图片</label>
+      <div class="cfg-img-row">
+        <img class="cfg-img-preview" id="cfg-img-preview" src="img/product.jpg">
+        <div>
+          <input type="text" id="cfg-image-url" placeholder="图片 URL，或点击右侧上传">
+          <span class="cfg-file-btn" onclick="document.getElementById('cfg-image-file').click()">上传本地图片</span>
+          <input type="file" id="cfg-image-file" accept="image/*" style="display:none" onchange="onImageFilePick(this)">
+        </div>
+      </div>
+    </div>
+
+    <div class="cfg-group">
+      <label>商品标题</label>
+      <textarea id="cfg-title"></textarea>
+    </div>
+
+    <div class="cfg-row">
+      <div class="cfg-group">
+        <label>实付价 (¥)</label>
+        <input type="text" id="cfg-price" inputmode="decimal">
+      </div>
+      <div class="cfg-group">
+        <label>原价 (¥)</label>
+        <input type="text" id="cfg-orig-price" inputmode="decimal">
+      </div>
+      <div class="cfg-group">
+        <label>共减 (¥)</label>
+        <input type="text" id="cfg-discount" inputmode="decimal">
+      </div>
+    </div>
+
+    <div class="cfg-row">
+      <div class="cfg-group">
+        <label>收货人</label>
+        <input type="text" id="cfg-name">
+      </div>
+      <div class="cfg-group">
+        <label>电话</label>
+        <input type="text" id="cfg-phone">
+      </div>
+    </div>
+
+    <div class="cfg-group">
+      <label>收货地址</label>
+      <textarea id="cfg-address"></textarea>
+    </div>
+
+    <div class="cfg-row">
+      <div class="cfg-group">
+        <label>创建时间</label>
+        <input type="text" id="cfg-create-time" placeholder="2026-09-01 16:39:46">
+      </div>
+      <div class="cfg-group">
+        <label>付款时间</label>
+        <input type="text" id="cfg-pay-time" placeholder="2026-09-01 16:39:48">
+      </div>
+    </div>
+    <div class="cfg-row">
+      <div class="cfg-group">
+        <label>发货时间</label>
+        <input type="text" id="cfg-ship-time" placeholder="2026-09-01 17:55:52">
+      </div>
+      <div class="cfg-group">
+        <label>订单号</label>
+        <input type="text" id="cfg-order-id">
+      </div>
+    </div>
+
+    <div class="cfg-group">
+      <label>店铺名称</label>
+      <input type="text" id="cfg-shop-name">
+    </div>
+
+    <div class="cfg-actions">
+      <button class="cfg-reset" onclick="resetConfig()">恢复默认</button>
+      <button class="cfg-save" onclick="saveConfig()">保存并应用</button>
+    </div>
+    <div class="cfg-tip">
+      提示：配置会保存在浏览器本地（localStorage）。也可以直接通过 URL 参数配置，例如：<br>
+      <code>?title=商品名&price=9.9&address=广东省佛山市</code>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ================= 默认数据 ================= */
+const DEFAULTS = {
+  imageUrl: 'img/product.jpg',
+  title: '新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰',
+  spec: '蓝咖撞色波点BB夹【四件套】',
+  qty: 1,
+  price: '4.99',
+  origPrice: '5.99',
+  discount: '1',
+  name: '困',
+  phone: '86-189****0880',
+  address: '广东省 佛山市 南海区 里水镇 ******************',
+  orderId: '5127217527457057230',
+  tradeNo: '2026090123001180001446401077',
+  payMethod: '支付宝支付',
+  createTime: '2026-09-01 16:39:46',
+  payTime: '2026-09-01 16:39:48',
+  shipTime: '2026-09-01 17:55:52',
+  shopName: '万千少女梦',
+  shopDesc: '88VIP好评率93%，客服平均22秒回复'
+};
+
+/* ================= 读取配置：localStorage + URL 参数（URL 优先） ================= */
+function getConfig() {
+  let cfg = { ...DEFAULTS };
+  try {
+    const saved = localStorage.getItem('tb-order-cfg');
+    if (saved) cfg = { ...cfg, ...JSON.parse(saved) };
+  } catch (e) {}
+  const qs = new URLSearchParams(location.search);
+  const map = {
+    img: 'imageUrl', image: 'imageUrl', title: 'title', spec: 'spec', qty: 'qty',
+    price: 'price', origPrice: 'origPrice', orig: 'origPrice', discount: 'discount',
+    name: 'name', phone: 'phone', address: 'address',
+    orderId: 'orderId', tradeNo: 'tradeNo', payMethod: 'payMethod',
+    createTime: 'createTime', payTime: 'payTime', shipTime: 'shipTime',
+    shopName: 'shopName', shopDesc: 'shopDesc'
+  };
+  for (const [key, field] of Object.entries(map)) {
+    const v = qs.get(key);
+    if (v !== null && v !== '') cfg[field] = v;
+  }
+  return cfg;
+}
+
+/* ================= 渲染 ================= */
+function money(v) { return '¥' + v; }
+
+function render(cfg) {
+  document.getElementById('product-image').src = cfg.imageUrl;
+  document.getElementById('cfg-img-preview').src = cfg.imageUrl;
+  document.getElementById('product-title').textContent = cfg.title;
+  document.getElementById('product-spec').textContent = cfg.spec;
+  document.getElementById('product-qty').textContent = cfg.qty;
+  document.getElementById('orig-price').textContent = money(cfg.origPrice);
+  document.getElementById('pay-price').textContent = money(cfg.price);
+  document.getElementById('total-amount').textContent = cfg.price;
+  document.getElementById('discount-amount').textContent = money(cfg.discount);
+  document.getElementById('gift-tag').textContent = '首单礼金抵¥' + cfg.discount;
+  document.getElementById('logi-addr').textContent =
+    cfg.name + ' ' + cfg.phone + ' 送至 ' + cfg.address.split(' ').slice(0, 3).join(' ') + '...';
+  document.getElementById('recv-info').textContent =
+    cfg.name + '，' + cfg.phone + '，' + cfg.address;
+  document.getElementById('order-id').textContent = cfg.orderId;
+  document.getElementById('trade-no').textContent = cfg.tradeNo;
+  document.getElementById('pay-method').textContent = cfg.payMethod;
+  document.getElementById('create-time').textContent = cfg.createTime;
+  document.getElementById('pay-time').textContent = cfg.payTime;
+  document.getElementById('ship-time').textContent = cfg.shipTime;
+  document.getElementById('shop-name').textContent = cfg.shopName;
+  document.getElementById('shop-desc').textContent = cfg.shopDesc;
+  document.title = '订单详情 - ' + cfg.shopName;
+}
+
+/* ================= 配置面板 ================= */
+function fillForm(cfg) {
+  const set = (id, v) => document.getElementById(id).value = v ?? '';
+  set('cfg-image-url', cfg.imageUrl.startsWith('data:') ? '' : cfg.imageUrl);
+  set('cfg-title', cfg.title);
+  set('cfg-price', cfg.price);
+  set('cfg-orig-price', cfg.origPrice);
+  set('cfg-discount', cfg.discount);
+  set('cfg-name', cfg.name);
+  set('cfg-phone', cfg.phone);
+  set('cfg-address', cfg.address);
+  set('cfg-create-time', cfg.createTime);
+  set('cfg-pay-time', cfg.payTime);
+  set('cfg-ship-time', cfg.shipTime);
+  set('cfg-order-id', cfg.orderId);
+  set('cfg-shop-name', cfg.shopName);
+}
+
+function openConfig() {
+  fillForm(getConfig());
+  document.getElementById('config-mask').classList.add('show');
+  document.getElementById('config-panel').classList.add('show');
+}
+function closeConfig() {
+  document.getElementById('config-mask').classList.remove('show');
+  document.getElementById('config-panel').classList.remove('show');
+}
+
+function saveConfig() {
+  const get = id => document.getElementById(id).value.trim();
+  const cfg = getConfig();
+  const imageUrl = get('cfg-image-url') || cfg.imageUrl;
+  const next = {
+    ...cfg,
+    imageUrl,
+    title: get('cfg-title') || cfg.title,
+    price: get('cfg-price') || cfg.price,
+    origPrice: get('cfg-orig-price') || cfg.origPrice,
+    discount: get('cfg-discount') || cfg.discount,
+    name: get('cfg-name') || cfg.name,
+    phone: get('cfg-phone') || cfg.phone,
+    address: get('cfg-address') || cfg.address,
+    createTime: get('cfg-create-time') || cfg.createTime,
+    payTime: get('cfg-pay-time') || cfg.payTime,
+    shipTime: get('cfg-ship-time') || cfg.shipTime,
+    orderId: get('cfg-order-id') || cfg.orderId,
+    shopName: get('cfg-shop-name') || cfg.shopName
+  };
+  localStorage.setItem('tb-order-cfg', JSON.stringify(next));
+  render(next);
+  closeConfig();
+  toast('已保存并应用');
+}
+
+function resetConfig() {
+  localStorage.removeItem('tb-order-cfg');
+  render(DEFAULTS);
+  fillForm(DEFAULTS);
+  toast('已恢复默认配置');
+}
+
+/* 本地图片上传 -> base64 */
+let pickedImageDataUrl = null;
+function onImageFilePick(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pickedImageDataUrl = e.target.result;
+    document.getElementById('cfg-img-preview').src = pickedImageDataUrl;
+    document.getElementById('cfg-image-url').value = '';
+  };
+  reader.readAsDataURL(file);
+}
+// 保存时若选择了本地图片，优先使用
+const _origSave = saveConfig;
+saveConfig = function () {
+  if (pickedImageDataUrl) {
+    document.getElementById('cfg-image-url').value = pickedImageDataUrl;
+  }
+  _origSave();
+  pickedImageDataUrl = null;
+};
+
+/* ================= 工具 ================= */
+function copyOrderId() {
+  const text = document.getElementById('order-id').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => toast('订单号已复制'));
+  } else {
+    toast('复制失败');
+  }
+}
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+/* 初始化 */
+render(getConfig());
+</script>
+</body>
+</html>
