@@ -188,7 +188,7 @@
                 <button class="link-btn" onclick="useDefaultImage()" data-page-node-id="ejcbkXmz3PXHD01jBgUdRe">使用默认图</button>
               </div>
               <input type="file" id="f-imgfile" accept="image/*" style="display:none" data-page-node-id="EFFA54GKf2AiI0eWkxQS5T">
-              <div class="img-tip" data-page-node-id="CynqYZn7NDsFnGMsXc1iGO">本地图片会转为 base64 内嵌，链接会较长；对外分享建议使用图片 URL。</div>
+              <div class="img-tip" data-page-node-id="CynqYZn7NDsFnGMsXc1iGO">上传自动压缩，也可拖拽图片到左侧预览上传；对外分享建议使用图片 URL。</div>
             </div>
           </div>
         </div>
@@ -417,18 +417,63 @@ function fitPreview() {
 }
 window.addEventListener('resize', fitPreview);
 
-/* ================= 本地图片 ================= */
-$('f-imgfile').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    $('f-imageUrl').value = ev.target.result;
+/* ================= 本地图片（自动压缩） ================= */
+/* 读入图片文件 → Canvas 等比缩放 → JPEG 压缩，避免 base64 过长 */
+function compressImage(file, maxSize, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('读取失败'));
+    reader.onload = ev => {
+      const img = new Image();
+      img.onerror = () => reject(new Error('图片解析失败'));
+      img.onload = () => {
+        let { width: w, height: h } = img;
+        const scale = Math.min(1, maxSize / Math.max(w, h));
+        w = Math.max(1, Math.round(w * scale));
+        h = Math.max(1, Math.round(h * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve({ dataUrl });
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function kb(n) { return (n / 1024).toFixed(0) + 'KB'; }
+
+async function handleUpload(file, fieldId) {
+  if (!file || !/^image\//.test(file.type)) { toast('请选择图片文件'); return; }
+  try {
+    const isAvatar = fieldId === 'f-avatar';
+    const { dataUrl } = await compressImage(file, isAvatar ? 256 : 640, isAvatar ? 0.85 : 0.82);
+    $(fieldId).value = dataUrl;
     updatePreviewImage();
     updatePreview();
-  };
-  reader.readAsDataURL(file);
-});
+    toast((isAvatar ? '头像' : '商品图') + '已压缩至约 ' + kb(dataUrl.length));
+  } catch (err) {
+    toast(err.message || '图片处理失败');
+  }
+}
+
+$('f-imgfile').addEventListener('change', e => { handleUpload(e.target.files[0], 'f-imageUrl'); e.target.value = ''; });
+$('f-avatarfile').addEventListener('change', e => { handleUpload(e.target.files[0], 'f-avatar'); e.target.value = ''; });
+
+/* 拖拽图片到预览图直接上传 */
+function bindDrop(previewId, fieldId) {
+  const el = $(previewId);
+  el.addEventListener('dragover', e => { e.preventDefault(); el.style.opacity = '.6'; });
+  el.addEventListener('dragleave', () => { el.style.opacity = ''; });
+  el.addEventListener('drop', e => {
+    e.preventDefault(); el.style.opacity = '';
+    handleUpload(e.dataTransfer.files[0], fieldId);
+  });
+}
+bindDrop('img-preview', 'f-imageUrl');
+bindDrop('avatar-preview', 'f-avatar');
+
 function useDefaultImage() {
   $('f-imageUrl').value = DEFAULTS.imageUrl;
   updatePreviewImage();
@@ -437,17 +482,6 @@ function useDefaultImage() {
 }
 
 /* ================= 店铺头像 ================= */
-$('f-avatarfile').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    $('f-avatar').value = ev.target.result;
-    updatePreviewImage();
-    updatePreview();
-  };
-  reader.readAsDataURL(file);
-});
 function useDefaultAvatar() {
   $('f-avatar').value = DEFAULTS.avatar;
   updatePreviewImage();
