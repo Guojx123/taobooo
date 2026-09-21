@@ -70,7 +70,7 @@
 
   /* ============ 导航栏 ============ */
   .nav {
-    height: 52px;
+    height: 50px;
     background: var(--card);
     display: flex;
     align-items: center;
@@ -100,7 +100,7 @@
   }
 
   /* ============ 物流栏 ============ */
-  .logistics { display: flex; align-items: center; gap: 9px; padding: 14px 16px; cursor: pointer; min-width: 0; }
+  .logistics { display: flex; align-items: center; gap: 9px; padding: 12px 16px; cursor: pointer; min-width: 0; }
   .logistics .pkg-icon { flex-shrink: 0; }
   .logistics .status { font-size: 16px; font-weight: 700; color: #222; flex-shrink: 0; }
   .logistics .divider { color: #e0e0e0; margin: 0 4px; flex-shrink: 0; font-weight: 300; }
@@ -110,7 +110,7 @@
   .logistics .arrow { color: #bbb; font-size: 15px; flex-shrink: 0; }
 
   /* ============ 店铺 + 商品（同卡） ============ */
-  .shop { display: flex; align-items: center; gap: 11px; padding: 16px 16px 4px; }
+  .shop { display: flex; align-items: center; gap: 11px; padding: 14px 16px 2px; }
   .shop .avatar {
     width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
     background: linear-gradient(135deg, #6db3f2, #1e69c8);
@@ -122,7 +122,7 @@
   .shop .enter { font-size: 13px; color: #666; display: flex; align-items: center; gap: 3px; flex-shrink: 0; cursor: pointer; }
   .shop .enter .arrow { color: #b0b0b0; }
 
-  .product { padding: 14px 16px 16px; }
+  .product { padding: 12px 16px 14px; }
   .product-main { display: flex; gap: 11px; }
   .product .pic {
     width: 94px; height: 94px; border-radius: 10px; flex-shrink: 0;
@@ -131,27 +131,27 @@
   .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
   .product .row1 { display: flex; gap: 12px; }
   .product .title {
-    font-size: 14px; line-height: 1.5; flex: 1; color: #333; font-weight: 500;
+    font-size: 14px; line-height: 1.5; flex: 1; color: #333;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
   }
-  .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+  .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
   .product .fold { font-size: 12px; color: #999; line-height: 1.2; cursor: pointer; }
   .product .orig-price { font-size: 14px; color: #333; }
-  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; gap: 8px; }
-  .product .spec { font-size: 12px; color: #999; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; gap: 8px; }
+  .product .spec { font-size: 12px; color: #999; background: #f5f5f5; padding: 1px 6px; border-radius: 3px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .product .qty { font-size: 13px; color: #666; flex-shrink: 0; }
-  .product .tags { display: flex; gap: 7px; margin-top: 9px; align-items: center; flex-wrap: wrap; }
+  .product .tags { display: flex; gap: 7px; margin-top: 7px; align-items: center; flex-wrap: wrap; }
   .tag { font-size: 11px; padding: 1.5px 5px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; }
-  .tag-fast { color: #00b578; border: 1px solid rgba(0,181,120,.45); background: #fff; }
+  .tag-fast { color: #00b578; background: #e8f8f1; }
   .tag-fast svg { flex-shrink: 0; }
-  .tag-return { color: #888; border: 1px solid #ddd; background: #fff; }
+  .tag-return { color: #999; background: #f5f5f5; }
   .tag-return .arrow { font-size: 9px; color: #bbb; }
-  .product .pay-row { display: flex; align-items: baseline; gap: 7px; margin-top: 10px; }
+  .product .pay-row { display: flex; align-items: baseline; gap: 7px; margin-top: 8px; }
   .product .pay-label { font-size: 13px; color: #333; font-weight: 500; }
   .product .pay-price { font-size: 18px; color: var(--orange); font-weight: 700; letter-spacing: -.2px; }
   .product .pay-detail { font-size: 12px; color: #666; display: inline-flex; align-items: center; gap: 2px; cursor: pointer; }
   .product .pay-detail .arrow { color: var(--orange); font-size: 12px; }
-  .product .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .product .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
   .btn {
     font-size: 13px; padding: 8px 18px; border-radius: 999px; line-height: 1;
     border: 1px solid #e0e0e0; background: #fff; color: #333;
@@ -162,7 +162,7 @@
   .btn-orange { color: var(--orange); border-color: rgba(255,80,0,.55); background: #fff6f0; }
 
   /* ============ 价格摘要 ============ */
-  .summary { padding: 16px; }
+  .summary { padding: 14px 16px; }
   .summary .sum-row { display: flex; align-items: center; }
   .summary .label { font-size: 17px; font-weight: 700; }
   .summary .discount { font-size: 13px; color: var(--red); font-weight: 600; margin-left: 10px; }
@@ -174,15 +174,15 @@
   .summary .detail-link .arrow { font-size: 10px; }
   .summary .amount { margin-left: auto; font-size: 20px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 5px; letter-spacing: -.3px; }
   .summary .amount .chevron { font-size: 13px; color: #666; font-weight: 400; }
-  .summary .coupon-row { margin-top: 12px; display: flex; }
+  .summary .coupon-row { margin-top: 10px; display: flex; }
   .summary .gift-tag {
     font-size: 12px; color: var(--orange); background: #fff3ec;
     border-radius: 4px; padding: 3px 8px; display: inline-flex; align-items: center; gap: 5px;
   }
 
   /* ============ 订单信息 ============ */
-  .order { padding: 16px 16px 8px; }
-  .order .head { display: flex; align-items: center; padding-bottom: 12px; gap: 4px; }
+  .order { padding: 14px 16px 6px; }
+  .order .head { display: flex; align-items: center; padding-bottom: 10px; gap: 4px; }
   .order .head .label { font-size: 17px; font-weight: 700; flex-shrink: 0; }
   .order .head .count { font-size: 12px; color: #999; }
   .order .head .chevron { font-size: 11px; color: #999; }
@@ -190,7 +190,7 @@
   .order .copy { font-size: 14px; color: #666; margin-left: 10px; flex-shrink: 0; cursor: pointer; }
   .order .row {
     display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 12px 0; font-size: 14px; line-height: 1.55;
+    padding: 10px 0; font-size: 14px; line-height: 1.55;
   }
   .order .row .k { color: #333; flex-shrink: 0; }
   .order .row .k .emo { font-size: 12px; margin-left: 4px; }
@@ -425,7 +425,8 @@ const DEFAULTS = {
   origPrice: '5.99',
   name: '困',
   phone: '86-189****0880',
-  address: '广东省 佛山市 南海区 里水镇 里水大道南********************',
+  address: '广东省 佛山市 南海区 里水镇 ********************',
+  logi: '里水大道...',
   orderId: '5127217527457057230',
   tradeNo: '2026090123001180001446401077',
   payMethod: '支付宝支付',
@@ -451,6 +452,9 @@ function getConfig() {
     const v = qs.get(k);
     if (v) cfg[field] = v;
   }
+  // 「送至」片段：配了 address 参数则自动截取，否则用默认
+  cfg._logi = qs.get('logi') || (qs.has('address') ? shortAddress(cfg.address) : DEFAULTS.logi);
+
   // 优惠金额：未指定时按 原价-实付价 自动计算
   const d = qs.get('discount');
   if (d) {
@@ -464,6 +468,7 @@ function getConfig() {
 
 /* ================= 渲染 ================= */
 function money(v) { return '¥' + v; }
+function trimMoney(v) { const n = parseFloat(v); return isNaN(n) ? v : String(Math.round(n * 100) / 100); }
 
 /* 「送至 XX...」片段：最后一个行政关键字之后的街道部分（去掉尾部打码星号） */
 function cut(s) { s = s.trim(); return s.length > 6 ? s.slice(0, 6) + '...' : s; }
@@ -485,11 +490,11 @@ function render(cfg) {
   document.getElementById('orig-price').textContent = money(cfg.origPrice);
   document.getElementById('pay-price').textContent = money(cfg.price);
   document.getElementById('total-amount').textContent = money(cfg.price);
-  document.getElementById('discount-amount').textContent = money(cfg._discount);
-  document.getElementById('gift-tag').textContent = '首单礼金抵¥' + cfg._discount;
+  document.getElementById('discount-amount').textContent = money(trimMoney(cfg._discount));
+  document.getElementById('gift-tag').textContent = '首单礼金抵¥' + trimMoney(cfg._discount);
   document.getElementById('logi-status').textContent = cfg.status;
   document.getElementById('logi-addr').textContent =
-    cfg.name + ' ' + cfg.phone + ' 送至 ' + shortAddress(cfg.address);
+    cfg.name + ' ' + cfg.phone + ' 送至 ' + cfg._logi;
   document.getElementById('recv-info').textContent =
     cfg.name + '，' + cfg.phone + '，' + cfg.address;
   document.getElementById('order-id').textContent = cfg.orderId;
