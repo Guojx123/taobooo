@@ -135,10 +135,11 @@
         font-size: 14px; line-height: 1.25; flex: 1; color: #333;
         display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
-    .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 18px; }
-    .product .fold { display: flex; cursor: pointer; }
+    .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
+    .product .fold { display: flex; cursor: pointer; margin-top: 10px; margin-right: 45px; }
     /* 修正：原价字重改回常规 400 */
-    .product .orig-price { font-size: 15px; color: #222; font-weight: 400; }
+    /* 原图实测：¥5.99 为 13px 灰蓝色 #7e8a9d */
+    .product .orig-price { font-size: 13px; color: #7e8a9d; font-weight: 400; line-height: 1; margin-top: 9px; }
     .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 0; gap: 8px; }
     .product .spec { font-size: 12px; color: #999; background: #f5f5f5; padding: 1px 6px; border-radius: 3px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .product .qty { font-size: 13px; color: #999; flex-shrink: 0; }
@@ -150,7 +151,9 @@
     .product .pay-row { display: flex; align-items: baseline; gap: 6px; margin-top: 0; }
     /* 修正：“实付价”标签改为常规字重 400 */
     .product .pay-label { font-size: 13px; color: var(--orange); font-weight: 400; }
-    .product .pay-price { font-size: 20px; color: var(--orange); font-weight: 700; letter-spacing: -.3px; }
+    /* 原图实测：数字高 12.7px ≈ 17px 字号，¥ 略小 */
+    .product .pay-price { font-size: 17px; color: var(--orange); font-weight: 700; letter-spacing: .5px; }
+    .product .pay-price .yen { font-size: 15px; }
     .product .pay-detail { font-size: 12px; color: var(--orange); display: inline-flex; align-items: center; gap: 2px; cursor: pointer; }
     .product .pay-detail .arrow { display: inline-flex; align-items: center; }
     .product .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
@@ -184,7 +187,9 @@
         color: transparent; font-weight: 600;
     }
     .summary .detail-link .arrow { display: inline-flex; align-items: center; }
-    .summary .amount { margin-left: auto; font-size: 20px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+    .summary .amount { margin-left: auto; font-size: 22px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 4px; line-height: 1.15; }
+    /* 原图实测：¥ 比数字小（12.7 vs 16.3） */
+    .summary .amount .yen { font-size: 17px; }
     .summary .amount .chevron { display: inline-flex; align-items: center; }
     .summary .coupon-row { margin-top: 9px; display: flex; }
     .summary .gift-tag {
@@ -349,7 +354,7 @@
                         <div class="title" id="product-title" data-page-node-id="DzcROM1wzvtLb5QQwGBI2X">新款波点韩系合金椭圆发夹高级滴油侧边少女时尚刘海发卡鸭嘴头饰</div>
                         <div class="side" data-page-node-id="GJPudbe56FzSACl0Mw5FJZ">
                             <span class="fold" onclick="toast('收起')" data-page-node-id="uvSMsU6B8Kp9oUsLGfOhAK">
-                                <svg width="14" height="8" viewBox="0 0 14 8" data-page-node-id="bnAM4jZEHPBFNjBBJ6d65s"><path d="M2 6.5 L7 1.5 L12 6.5" stroke="#999" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="GbJEM1GdUBqbfJS81YsbdX"/></svg>
+                                <svg width="11" height="6" viewBox="0 0 14 8" data-page-node-id="bnAM4jZEHPBFNjBBJ6d65s"><path d="M2 6.5 L7 1.5 L12 6.5" stroke="#8a97a8" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="GbJEM1GdUBqbfJS81YsbdX"/></svg>
                             </span>
                             <span class="orig-price" id="orig-price" data-page-node-id="ysYG3DFu2jU1Sug1YQQDDU">¥5.99</span>
                         </div>
@@ -369,7 +374,7 @@
                     </div>
                     <div class="pay-row" data-page-node-id="eEvXg2HOMyCdC3iRiiZsoc">
                         <span class="pay-label" data-page-node-id="kfWjyeRBw1PQTHq6NWCh6R">实付价</span>
-                        <span class="pay-price" id="pay-price" data-page-node-id="J0SPgACo7d4Q7KOzEIX0Ez">¥4.99</span>
+                        <span class="pay-price" id="pay-price" data-page-node-id="J0SPgACo7d4Q7KOzEIX0Ez"><span class="yen">¥</span>4.99</span>
                         <span class="pay-detail" onclick="toast('价格明细')" data-page-node-id="bMMFV8dCJX1CeCVKWIUbdz">
                             价格明细
                             <span class="arrow" data-page-node-id="GD5kGDZImFrvRPZEqumK71">
@@ -399,7 +404,7 @@
                 </span>
             </span>
             <span class="amount" data-page-node-id="c7PKi825pgNzcU5Tw9on03">
-                <span id="total-amount" data-page-node-id="OOFpTgwMTuvQNbZb5ty8FB">¥4.99</span>
+                <span id="total-amount" data-page-node-id="OOFpTgwMTuvQNbZb5ty8FB"><span class="yen">¥</span>4.99</span>
                 <span class="chevron" data-page-node-id="6nCmHIqvAnadHhVwXEqwdu">
                     <svg width="12" height="8" viewBox="0 0 12 8" data-page-node-id="GT2RjUr7jBzWt3GKUDSBaJ"><path d="M2 2 L6 6 L10 2" stroke="#666" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="UjIvX4AUCgLoxdyE0targ7"/></svg>
                 </span>
@@ -558,8 +563,9 @@ function render(cfg) {
   document.getElementById('product-spec').textContent = cfg.spec;
   document.getElementById('product-qty').textContent = cfg.qty;
   document.getElementById('orig-price').textContent = money(cfg.origPrice);
-  document.getElementById('pay-price').textContent = money(cfg.price);
-  document.getElementById('total-amount').textContent = money(cfg.price);
+  const num = String(cfg.price == null ? '' : cfg.price).replace(/[^0-9.]/g, '');
+  document.getElementById('pay-price').innerHTML = '<span class="yen">¥</span>' + num;
+  document.getElementById('total-amount').innerHTML = '<span class="yen">¥</span>' + num;
   document.getElementById('discount-amount').textContent = money(trimMoney(cfg._discount));
   document.getElementById('gift-tag').textContent = '首单礼金抵¥' + trimMoney(cfg._discount);
   document.getElementById('logi-status').textContent = cfg.status;
