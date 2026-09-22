@@ -123,7 +123,7 @@
     .shop .desc { font-size: 12px; color: var(--text-sub); margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .shop .enter { font-size: 13px; color: #333; display: flex; align-items: center; gap: 2px; flex-shrink: 0; cursor: pointer; }
 
-    .product { padding: 12px 16px 6px; }
+    .product { padding: 17px 16px 6px; }
     .product-main { display: flex; gap: 11px; }
     .product .pic {
         width: 92px; height: 100px; border-radius: 4px; flex-shrink: 0;
@@ -132,7 +132,8 @@
     .product .detail { flex: 1; min-width: 0; display: flex; flex-direction: column; }
     .product .row1 { display: flex; gap: 12px; }
     .product .title {
-        font-size: 14px; line-height: 1.25; flex: 1; color: #333;
+        /* 原图实测：行距 17px（14×1.21）、字距略紧，断行位置须与截图一致 */
+        font-size: 14px; line-height: 1.21; letter-spacing: -.6px; flex: 1; color: #333;
         display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
     .product .side { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
@@ -141,7 +142,8 @@
     /* 原图实测：¥5.99 为 13px 灰蓝色 #7e8a9d */
     .product .orig-price { font-size: 13px; color: #7e8a9d; font-weight: 400; line-height: 1; margin-top: 9px; }
     .product .row2 { display: flex; justify-content: space-between; align-items: center; margin-top: 0; gap: 8px; }
-    .product .spec { font-size: 12px; color: #999; background: #f5f5f5; padding: 1px 6px; border-radius: 3px; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    /* 原图实测：规格副标题为蓝灰 #7c889c 纯文字，无灰底 */
+    .product .spec { font-size: 12px; color: #7c889c; padding: 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .product .qty { font-size: 13px; color: #999; flex-shrink: 0; }
     .product .tags { display: flex; gap: 6px; margin-top: 2px; align-items: center; flex-wrap: wrap; }
     .tag { font-size: 11px; padding: 1px 5px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; }
@@ -166,19 +168,22 @@
     .btn-orange { color: var(--orange); background: #fff0e6; }
 
     /* ============ 价格摘要 ============ */
-    .summary { padding: 8px 16px 14px; }
+    /* 原图实测：商品卡与摘要卡之间无灰色间隔（同一白色块） */
+    .summary { margin-top: 0; padding: 16px 16px 14px; }
     .summary .sum-row { display: flex; align-items: center; }
     .summary .label { font-size: 16px; font-weight: 700; color: #333; }
     /* 修正：共减¥1 为橙色大字（原图取色 #ff6404，16px 加粗） */
-    .summary .discount { font-size: 16px; color: #ff6404; font-weight: 600; margin-left: 12px; letter-spacing: -.2px; }
+    .summary .discount { font-size: 16px; color: #ff6404; font-weight: 600; margin-left: 8px; letter-spacing: -.2px; }
     .summary .detail-link {
-        font-size: 11.5px; border-radius: 999px; padding: 1.5px 7px; margin-left: 9px;
+        /* 原图实测：胶囊 66.7×16.3px */
+        font-size: 11.5px; line-height: 1; border-radius: 999px; padding: 1.5px 4px; margin-left: 6.5px;
         border: 1px solid transparent;
         /* 原图：背景与描边均为橙→粉渐变（左端偏橙），双渐变实现 */
         background: linear-gradient(90deg, #fff3ee, #fff2f2, #fdf0f8) padding-box,
                     linear-gradient(90deg, #ffdcc9, #fcdcee) border-box;
         display: inline-flex; align-items: center; gap: 3px; cursor: pointer;
         flex-shrink: 0;
+        position: relative; top: 2px;
     }
     .summary .detail-link .dlt {
         /* 渐变文字：橙 → 红 → 品红（原图取色） */
@@ -187,9 +192,17 @@
         color: transparent; font-weight: 600;
     }
     .summary .detail-link .arrow { display: inline-flex; align-items: center; }
-    .summary .amount { margin-left: auto; font-size: 22px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 4px; line-height: 1.15; }
-    /* 原图实测：¥ 比数字小（12.7 vs 16.3） */
+    /* 原图实测：数字字形高 13.0px、宽（含¥）47.0px → 字号 18px */
+    .summary .amount { margin-left: auto; font-size: 18px; color: #222; font-weight: 700; display: flex; align-items: center; gap: 4px; line-height: 1.15; }
+    /* 原图实测：¥ 高 12.7px，与数字接近 */
     .summary .amount .yen { font-size: 17px; }
+    /* 系统字体数字比淘宝专用字体宽约 7%，横向微压缩以对齐原图总宽 47px；并下移 2px 对齐基线 */
+    .summary .amount #total-amount {
+        display: inline-block;
+        transform: scaleX(.93) translateY(2px);
+        transform-origin: right center;
+        margin-right: 2px;
+    }
     .summary .amount .chevron { display: inline-flex; align-items: center; }
     .summary .coupon-row { margin-top: 9px; display: flex; }
     .summary .gift-tag {
@@ -205,7 +218,7 @@
     }
 
     /* ============ 订单信息 ============ */
-    .order { padding: 8px 16px 6px; }
+    .order { padding: 12px 16px 0; }
     .order .head { display: flex; align-items: center; padding-bottom: 8px; gap: 4px; }
     .order .head .label { font-size: 16px; font-weight: 700; color: #333; }
     .order .head .count { font-size: 12px; color: #999; }
@@ -222,6 +235,8 @@
     .order .row .v { color: #999; text-align: right; margin-left: 28px; word-break: break-all; font-weight: 400; line-height: 1.15; }
     /* 原图中收货信息行上方多约 10px 间距 */
     .order .row-recv { margin-top: 10px; }
+    /* 原图实测：最后一行距卡片底边仅 7.3px */
+    .order > .row:last-child { padding-bottom: 3px; }
     .order .row .v.dim { color: #999; }
 
     /* ============ 底部操作栏 ============ */
@@ -230,7 +245,8 @@
         width: 100%; max-width: 420px;
         background: var(--card);
         display: flex; align-items: center;
-        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        /* 原图实测：底栏高 91px（含 iPhone 底部安全区） */
+        padding: 10px 14px max(40px, calc(10px + env(safe-area-inset-bottom)));
         gap: 8px; z-index: 20;
         box-shadow: 0 -1px 0 rgba(0,0,0,.03);
     }
